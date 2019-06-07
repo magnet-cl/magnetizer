@@ -6,6 +6,22 @@ function print_green(){
     echo -e "\033[32m$1\033[39m"
 }
 
+case "$(uname -s)" in
+
+   Darwin)
+     OS='Darwin'
+     ;;
+
+   Linux)
+     OS='Linux'
+     ;;
+
+   *)
+    echo "OS not supported"
+    exit
+    ;;
+esac
+
 if [ "$OS" == "Darwin" ] ; then
     print_green "Installing ansible"
     pip install --user ansible
