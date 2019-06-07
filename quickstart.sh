@@ -3,7 +3,7 @@
 set -e
 
 function print_green(){
-    echo -e "\e[32m$1\e[39m"
+    echo -e "\033[32m$1\033[39m"
 }
 
 if [ "$OS" == "Darwin" ] ; then
