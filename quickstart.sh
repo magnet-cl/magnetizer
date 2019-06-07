@@ -6,13 +6,18 @@ function print_green(){
     echo -e "\e[32m$1\e[39m"
 }
 
-print_green "Adding ansible PPA"
-sudo apt install software-properties-common
-sudo apt-add-repository --yes ppa:ansible/ansible
-sudo apt update
+if [ "$OS" == "Darwin" ] ; then
+    print_green "Installing ansible"
+    pip install --user ansible
+else
+    print_green "Adding ansible PPA"
+    sudo apt install software-properties-common
+    sudo apt-add-repository --yes ppa:ansible/ansible
+    sudo apt update
 
-print_green "Installing ansible"
-sudo apt install --yes ansible
+    print_green "Installing ansible"
+    sudo apt install --yes ansible
+fi
 
 print_green "Setting hosts configuration file at ~/.ansible/hosts"
 echo "[defaults]" >> ~/.ansible.cfg
