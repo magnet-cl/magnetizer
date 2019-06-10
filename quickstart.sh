@@ -30,7 +30,7 @@ if [ "$OS" == "Darwin" ] ; then
     ansible_path=`pip3 show ansible | grep "Location.*lib" -o`
     location=${ansible_path//\/lib/\/bin}
     location=${location//Location: /}
-    print_green "Include the following line in your shell dot file:"
+    print_green "Include the following line in your shell dot file (may be ~/.zshrc):"
     print_green "export PATH=\$PATH:$location"
     echo ""
 
