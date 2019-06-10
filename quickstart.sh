@@ -24,7 +24,14 @@ esac
 
 if [ "$OS" == "Darwin" ] ; then
     print_green "Installing ansible"
-    pip install --user ansible
+    pip3 install --user ansible
+
+    print_green "Remember to add the binary folder that contains to the PATH"
+    ansible_path=`pip3 show ansible | grep "Location.*lib" -o`
+    location=${ansible_path//\/lib/\/bin}
+    print_green "You can find de binary folder on the following $location"
+    echo ""
+
 else
     print_green "Adding ansible PPA"
     sudo apt install software-properties-common
