@@ -26,10 +26,12 @@ if [ "$OS" == "Darwin" ] ; then
     print_green "Installing ansible"
     pip3 install --user ansible
 
-    print_green "Remember to add the binary folder that contains to the PATH"
+    print_green "Remember to add the binary folder that contains ansible to PATH"
     ansible_path=`pip3 show ansible | grep "Location.*lib" -o`
     location=${ansible_path//\/lib/\/bin}
-    print_green "You can find de binary folder on the following $location"
+    location=${location//Location: /}
+    print_green "Include the following line in your shell dot file:"
+    print_green "export PATH=\$PATH:$location"
     echo ""
 
 else
