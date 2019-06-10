@@ -44,9 +44,13 @@ else
     sudo apt install --yes ansible
 fi
 
-print_green "Setting hosts configuration file at ~/.ansible/hosts"
-echo "[defaults]" >> ~/.ansible.cfg
-echo "inventory = ~/.ansible/hosts" >> ~/.ansible.cfg
+# Add inventory to ansible.cfg
+if ! grep -q "[defaults']" ~/.ansible.cfg; then
+    print_green "Setting hosts configuration file at ~/.ansible/hosts"
+    echo "[defaults]" >> ~/.ansible.cfg
+    echo "inventory = ~/.ansible/hosts" >> ~/.ansible.cfg
+fi
+
 mkdir -p ~/.ansible
 print_green "Adding localhost to ansible hosts"
 echo "localhost" >> ~/.ansible/hosts
