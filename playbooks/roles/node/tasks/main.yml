@@ -1,0 +1,8 @@
+- name: install Node.js
+  include_role:
+    name: geerlingguy.nodejs
+    apply:
+      become: true
+  vars:
+    nodejs_version: 12.x
+    nodejs_install_npm_user: "{{ ansible_user_id }}"
