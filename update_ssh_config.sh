@@ -10,7 +10,8 @@ REPO='git@bitbucket.org/magnet-cl/keygen.git'
 SSH_CONFIG_FILE='ssh_config'
 
 print_green "Downloading inventory script ssh_config.py from ansible contrib"
-wget https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/ssh_config.py
+wget https://raw.githubusercontent.com/ansible/ansible/stable-2.9/contrib/inventory/ssh_config.py
+
 chmod +x ssh_config.py
 mkdir -p inventory
 mv ssh_config.py inventory/
