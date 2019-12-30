@@ -1,0 +1,109 @@
+- name: vps init
+  hosts: all
+  vars:
+    github_users_as_initial_admins:  # TODO get list dinamically
+      - thagat
+      - wooo-
+      - taandrighetti
+      - jslopez
+
+  vars_prompt:
+    - name: admin_user
+      prompt: "Enter user name to create an admin with sudo"
+      default: magnet
+      private: no
+    - name: admin_user_password
+      prompt: "Enter user password"
+      private: yes
+      encrypt: "sha512_crypt"
+      confirm: yes
+
+  pre_tasks:
+    - name: check that ansible_limit is defined
+      assert:
+        that: ansible_limit is defined
+        fail_msg: Please explicitly limit the hosts you want to target with --limit or -l
+        quiet: yes
+
+    - name: add group for admin user
+      group:
+        name: "{{ admin_user }}"
+        state: present
+      become: yes
+      tags:
+        - init
+
+    - name: add admin user with sudo as additional group
+      user:
+        name: "{{ admin_user }}"
+        groups: "{{ admin_user }},sudo"
+        append: yes
+        password: "{{ admin_user_password }}"
+        update_password: on_create
+      become: yes
+      tags:
+        - init
+
+    - name: add ssh keys of initial admins
+      authorized_key:
+        user: "{{ admin_user }}"
+        state: present
+        key: "https://github.com/{{ item }}.keys"
+      loop: "{{ github_users_as_initial_admins }}"
+      become: yes
+      tags:
+        - init
+
+    - name: add admin user to sudoers
+      template:
+        src: templates/admin_user_sudoers.j2
+        dest: "/etc/sudoers.d/{{ admin_user }}"
+        mode: 0440
+      become: yes
+      tags:
+        - init
+
+    - name: set default locale
+      lineinfile:
+        path: /etc/environment
+        regexp: "^LC_ALL="
+        line: "LC_ALL=\"{{ default_locale | default('en_US.UTF-8') }}\""
+      become: yes
+      tags:
+        - init
+
+  roles:
+    - role: ssh
+      tags:
+        - init
+    - role: common
+      tags:
+        - init
+    - role: zsh
+      vars:
+        users:
+          - username: "{{ admin_user }}"
+      tags:
+        - init
+        - utils
+        - zsh
+    - role: node
+      tags:
+        - init
+        - utils
+        - node
+    - role: vim
+      vars:
+        users:
+          - username: "{{ admin_user }}"
+      tags:
+        - init
+        - utils
+        - vim
+
+  post_tasks:
+    - name: upgrade packages
+      apt:
+        upgrade: safe
+      become: yes
+      when: ansible_distribution == "Ubuntu"
