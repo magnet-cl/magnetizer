@@ -1,0 +1,5 @@
+- hosts: all
+  tasks:
+    - name: install and configure certbot
+      include_role:
+        name: certbot

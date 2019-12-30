@@ -1,0 +1,6 @@
+- hosts: all
+  tasks:
+    - name: harden nginx configurations
+      include_role:
+        name: certbot
+        tasks_from: security

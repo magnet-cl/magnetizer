@@ -1,0 +1,19 @@
+- name: change ssl protocols on certbot nginx configuration
+  replace:
+    path: "/etc/letsencrypt/options-ssl-nginx.conf"
+    regexp: '^ssl_protocols .*$'
+    replace: 'ssl_protocols "{{ nginx_ssl_protocols }}";'
+  become: yes
+
+- name: change ssl ciphers on certbot nginx configuration
+  replace:
+    path: "/etc/letsencrypt/options-ssl-nginx.conf"
+    regexp: '^ssl_ciphers .*$'
+    replace: 'ssl_ciphers "{{ nginx_ssl_cipers }}";'
+  become: yes
+
+- name: harden nginx configuration
+  include_role:
+    name: dev-sec.nginx-hardening
+    apply:
+      become: yes
