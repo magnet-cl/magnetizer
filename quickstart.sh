@@ -24,7 +24,7 @@ esac
 
 if [ "$OS" == "Darwin" ] ; then
     print_green "Installing ansible"
-    pip3 install --user ansible
+    pip3 install --user ansible ansible-lint paramiko
 
     print_green "Remember to add the binary folder that contains ansible to PATH"
     ansible_path=$(pip3 show ansible | grep "Location.*lib" -o)
@@ -40,7 +40,7 @@ else
     sudo apt install --yes python3-pip git
 
     print_green "Installing ansible"
-    sudo -H pip3 install ansible paramiko
+    sudo -H pip3 install ansible ansible-lint paramiko
 
 fi
 
