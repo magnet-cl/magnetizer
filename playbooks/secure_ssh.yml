@@ -1,0 +1,6 @@
+- hosts: all
+  tasks:
+    - name: harden SSH
+      include_role:
+        name: ssh
+        tasks_from: security

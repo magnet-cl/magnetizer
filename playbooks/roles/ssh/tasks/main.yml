@@ -1,0 +1,55 @@
+---
+- name: secure ssh
+  include_tasks: security.yml
+  tags:
+    - init
+    - security
+
+- name: create ssh directory
+  file:
+    path: "~{{ item.username }}/.ssh"
+    state: directory
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: 0700
+  with_items:
+    - "{{ users }}"
+  become: yes
+  tags:
+    - init
+
+- name: generate SSH key
+  openssh_keypair:
+    path: "~{{ item.username }}/.ssh/id_rsa"
+  with_items:
+    - "{{ users }}"
+  become: yes
+  become_user: "{{ item.username }}"
+  tags:
+    - init
+
+- name: add github to known hosts
+  known_hosts:
+    path: "~{{ item.username }}/.ssh/known_hosts"
+    name: github.com
+    key: "{{ github_host_key }}"
+    state: present
+  with_items:
+    - "{{ users }}"
+  become: yes
+  become_user: "{{ item.username }}"
+  tags:
+    - init
+
+- name: add bitbucket to known hosts
+  known_hosts:
+    path: "~{{ item.username }}/.ssh/known_hosts"
+    name: bitbucket.org
+    key: "{{ bitbucket_host_key }}"
+    state: present
+  with_items:
+    - "{{ users }}"
+  become: yes
+  become_user: "{{ item.username }}"
+  tags:
+    - init

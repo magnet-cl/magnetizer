@@ -1,0 +1,10 @@
+---
+- name: ssh hardening
+  include_role:
+    name: dev-sec.ssh-hardening
+    apply:
+      become: yes
+  vars:
+    - sftp_enabled: true
+  tags:
+    - security
