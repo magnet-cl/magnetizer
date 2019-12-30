@@ -1,0 +1,7 @@
+- name: install vim and vim_config
+  hosts: all
+  roles:
+    - role: vim
+      vars:
+        users:
+          - username: "{{ ansible_user_id }}"

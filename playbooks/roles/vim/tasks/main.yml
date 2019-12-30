@@ -1,0 +1,51 @@
+---
+- name: install vim
+  apt:
+    name: vim
+    state: present
+  become: yes
+  when: ansible_distribution == "Ubuntu"
+  tags:
+    - init
+    - vim
+
+- name: clone vim_config repository
+  git:
+    repo: https://github.com/magnet-cl/Vim_config.git
+    dest: "~{{ item.username }}/.vim"
+    version: master
+  become: yes
+  become_user: "{{ item.username }}"
+  with_items:
+    - "{{ users | default({'username': ansible_user_id}) }}"
+  tags:
+    - vim
+
+- name: install vim_config pre-requisites (ubuntu)
+  apt:
+    name: "{{ vim_config_deb_packages }}"
+    state: present
+  become: yes
+  when: ansible_distribution == "Ubuntu"
+  tags:
+    - vim
+
+- name: install vim_config pre-requisites (macOS)
+  homebrew:
+    name: "{{ vim_config_brew_packages }}"
+    state: present
+  when: ansible_distribution == 'MacOSX'
+  tags:
+    - vim
+
+- name: run vim_config installer
+  command:
+    cmd: "./install.sh"
+    chdir: "~{{ item.username }}/.vim"
+  become: yes
+  become_user: "{{ item.username }}"
+  with_items:
+    - "{{ users | default({'username': ansible_user_id}) }}"
+  changed_when: False
+  tags:
+    - vim

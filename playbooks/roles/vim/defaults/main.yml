@@ -1,0 +1,11 @@
+---
+vim_config_deb_packages:
+  - ack-grep
+  - flake8
+  - shellcheck
+  # - exuberant-ctags
+vim_config_brew_packages:
+  - ack
+  - flake8
+  - shellcheck
+  # - ctags
