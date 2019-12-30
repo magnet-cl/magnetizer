@@ -37,10 +37,7 @@
 
 - name: install certbot and nginx plugin
   apt:
-    name: "{{ item }}"
-  loop:
-    - certbot
-    - python-certbot-nginx
+    name: "certbot python-certbot-nginx"
   become: yes
   when:
     - "'nginx' in ansible_facts.packages"
