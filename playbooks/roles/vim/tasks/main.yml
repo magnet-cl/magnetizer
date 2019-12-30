@@ -42,10 +42,10 @@
   command:
     cmd: "./install.sh"
     chdir: "~{{ item.username }}/.vim"
+    creates: "~{{ item.username }}/.vim/bundle"
   become: yes
   become_user: "{{ item.username }}"
   with_items:
     - "{{ users | default({'username': ansible_user_id}) }}"
-  changed_when: False
   tags:
     - vim
