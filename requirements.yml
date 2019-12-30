@@ -1,0 +1,19 @@
+- name: geerlingguy.nodejs
+  src: https://github.com/geerlingguy/ansible-role-nodejs
+  version: 405a113ccbde0c99614f6f815fb4285cb742ad25
+
+- name: gantsign.oh-my-zsh
+  src: https://github.com/gantsign/ansible-role-oh-my-zsh
+  version: a267b0bd125bd82c7886d45fce459e3267a517ac
+
+- name: geerlingguy.swap
+  src: https://github.com/geerlingguy/ansible-role-swap
+  version: 4cd9f5d25ff72353dc9a8055345dce303f11ca9c
+
+- name: dev-sec.ssh-hardening
+  src: https://github.com/dev-sec/ansible-ssh-hardening
+  version: 8f44b6edd9e2abf220aee7a429f1b1182c818dd4
+
+- name: dev-sec.nginx-hardening
+  src: https://github.com/dev-sec/ansible-nginx-hardening
+  version: d7cedf51e2a541fb9f75135231606cc1f5b354a0
