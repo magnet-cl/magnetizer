@@ -27,7 +27,7 @@ if [ "$OS" == "Darwin" ] ; then
     pip3 install --user ansible
 
     print_green "Remember to add the binary folder that contains ansible to PATH"
-    ansible_path=`pip3 show ansible | grep "Location.*lib" -o`
+    ansible_path=$(pip3 show ansible | grep "Location.*lib" -o)
     location=${ansible_path//\/lib/\/bin}
     location=${location//Location: /}
     print_green "Include the following line in your shell dotfile (may be ~/.zshrc or ~/.bash_profile):"
@@ -35,22 +35,14 @@ if [ "$OS" == "Darwin" ] ; then
     echo ""
 
 else
-    print_green "Adding ansible PPA"
-    sudo apt install software-properties-common
-    sudo apt-add-repository --yes ppa:ansible/ansible
+    print_green "Installing pip3"
     sudo apt update
+    sudo apt install --yes python3-pip git
 
     print_green "Installing ansible"
-    sudo apt install --yes ansible
+    sudo -H pip3 install ansible paramiko
+
 fi
 
-# Add inventory to ansible.cfg
-if ! grep -q "[defaults']" ~/.ansible.cfg; then
-    print_green "Setting hosts configuration file at ~/.ansible/hosts"
-    echo "[defaults]" >> ~/.ansible.cfg
-    echo "inventory = ~/.ansible/hosts" >> ~/.ansible.cfg
-fi
-
-mkdir -p ~/.ansible
-print_green "Adding localhost to ansible hosts"
-echo "localhost" >> ~/.ansible/hosts
+print_green "Installing ansible-galaxy requirements"
+ansible-galaxy install -r requirements.yml
