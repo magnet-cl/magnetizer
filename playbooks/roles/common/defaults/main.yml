@@ -1,0 +1,10 @@
+---
+recommended_ubuntu_packages:
+  - autojump
+  - build-essential
+  - curl
+  - git
+  - htop
+  - tig
+  - unzip
+  - zip

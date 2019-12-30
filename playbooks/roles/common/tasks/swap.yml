@@ -1,0 +1,9 @@
+---
+- name: add swap partition
+  include_role:
+    name: geerlingguy.swap
+    apply:
+      become: yes
+  vars:
+    swap_file_size_mb:  '2048'
+  tags: swap
