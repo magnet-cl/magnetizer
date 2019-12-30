@@ -107,3 +107,7 @@
         upgrade: safe
       become: yes
       when: ansible_distribution == "Ubuntu"
+    - name: set ntp pool
+      include_role:
+        name: common
+        tasks_from: set_ntp_pool

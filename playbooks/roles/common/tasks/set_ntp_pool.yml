@@ -1,0 +1,7 @@
+- name: set default NTP pool
+  become: yes
+  replace:
+    path: '/etc/ntp.conf'
+    regexp: 'ubuntu\.pool\.ntp\.org'
+    replace: 'us.pool.ntp.org'
+  tags: ntp

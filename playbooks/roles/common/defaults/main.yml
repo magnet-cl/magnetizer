@@ -8,3 +8,4 @@ recommended_ubuntu_packages:
   - tig
   - unzip
   - zip
+ntp_pool: "us.pool.ntp.org"
