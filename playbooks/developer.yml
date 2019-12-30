@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  roles:
+    - role: common
+    - role: zsh
+      vars:
+        users:
+          - username: "{{ ansible_user_id }}"
+      tags:
+        - utils
+        - zsh
+    - role: node
+      tags:
+        - utils
+        - node
+    - role: vim
+      vars:
+        users:
+          - username: "{{ ansible_user_id }}"
+      tags:
+        - utils
+        - vim
