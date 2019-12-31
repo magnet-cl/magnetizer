@@ -102,12 +102,16 @@
         - vim
 
   post_tasks:
+    - name: set ntp pool
+      include_role:
+        name: common
+        tasks_from: set_ntp_pool
+    - name: set swap partition
+      include_role:
+        name: common
+        tasks_from: set_swap
     - name: upgrade packages
       apt:
         upgrade: safe
       become: yes
       when: ansible_distribution == "Ubuntu"
-    - name: set ntp pool
-      include_role:
-        name: common
-        tasks_from: set_ntp_pool

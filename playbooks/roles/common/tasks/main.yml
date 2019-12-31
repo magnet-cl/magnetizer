@@ -17,6 +17,3 @@
 - name: setup NTP
   import_tasks: ntp.yml
   when: ansible_distribution == "Ubuntu"
-
-- name: set swap partition
-  import_tasks: swap.yml
