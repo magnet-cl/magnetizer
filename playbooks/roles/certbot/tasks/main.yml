@@ -4,8 +4,7 @@
     name: python-apt
     state: present
   become: yes
-  when:
-    -  ansible_distribution == "Ubuntu"
+  when: ansible_distribution == "Ubuntu"
   tags:
     - certbot
 
@@ -54,7 +53,6 @@
 
 - name: secure nginx
   include_tasks: security.yml
-  when:
-    - "'nginx' in ansible_facts.packages"
+  when: "'nginx' in ansible_facts.packages"
   tags:
     - certbot
