@@ -32,3 +32,53 @@ It includes the following tasks:
 
 The last post-task defined in the playbook upgrades system packages through
 apt safe upgrade, it might require a system reboot.
+
+### developer
+
+The playbook is at [playbooks/developer.yml](playbooks/developer.yml).
+
+It includes the following roles considering localhost as target:
+
+* common/main
+* zsh
+* node
+* vim
+
+### enable SSL
+
+The playbook is at [playbooks/enable_ssl.yml](playbooks/enable_ssl.yml), it
+automatically enable HTTPS on the target host through
+[certbot](https://certbot.eff.org/).
+
+The following variables can be se set as extra parameters when the playbook is
+played:
+
+* `certbot_domain`: If unset it will use the host specified in the ansible
+  inventory.
+* `certbot_admin_email`: Email for account notifications.
+
+A related playbook is at
+[playbooks/secure_nginx.yml](playbooks/secure_nginx.yml), it hardens nginx
+through a galaxy role from https://dev-sec.io/.
+
+### install vim config
+
+The playbook is at
+[playbooks/install_vim_config.yml](playbooks/install_vim_config.yml).
+
+### install zsh
+
+The playbook is at [playbooks/install_zsh.yml](playbooks/install_zsh.yml).
+
+It performs the following tasks:
+
+* Install zsh and oh-my-zsh through the ansible galaxy role
+[gantsign.oh-my-zsh](https://galaxy.ansible.com/gantsign/oh-my-zsh).
+* Upload and set custom set of plugins.
+
+### secure ssh
+
+The playbook is at [playbooks/secure_ssh.yml](playbooks/secure_ssh.yml). It
+hardens SSH through a galaxy role from https://dev-sec.io/. Custom
+configurations are set as [role
+variables](playbooks/roles/ssh/defaults/main.yml).
