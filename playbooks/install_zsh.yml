@@ -1,0 +1,8 @@
+---
+- name: install zsh, oh-my-zsh with custom plugins
+  hosts: all
+  roles:
+    - role: zsh
+      vars:
+        users:
+          - username: "{{ ansible_user_id }}"

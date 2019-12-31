@@ -47,8 +47,9 @@
   command: "ls -1 ~{{ users.0.username }}/.oh-my-zsh/custom/plugins/"
   register: "custom_plugins"
   become: yes
-  changed_when: False
-  tags: zsh
+  changed_when: "custom_plugins.stdout_lines | length != 0"
+  tags:
+    - zsh
 
 - name: enable custom plugins
   replace:
