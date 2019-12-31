@@ -1,3 +1,4 @@
+---
 - name: change ssl protocols on certbot nginx configuration
   replace:
     path: "/etc/letsencrypt/options-ssl-nginx.conf"

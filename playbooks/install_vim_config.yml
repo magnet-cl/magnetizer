@@ -1,3 +1,4 @@
+---
 - name: install vim and vim_config
   hosts: all
   roles:

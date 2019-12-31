@@ -1,3 +1,4 @@
+---
 - name: vps init
   hosts: all
   vars:

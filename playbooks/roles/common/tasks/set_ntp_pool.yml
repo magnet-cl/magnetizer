@@ -1,3 +1,4 @@
+---
 - name: set default NTP pool
   become: yes
   replace:

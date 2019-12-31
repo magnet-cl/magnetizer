@@ -1,3 +1,4 @@
+---
 - name: install NTP
   become: yes
   apt:
