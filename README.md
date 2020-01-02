@@ -22,7 +22,7 @@ then it obtains the `ssh_config` file from magnet's keygen repository and
 it merges with `~/.ssh/config_local` into `~/.ssh/config`. This allows the
 following syntax when running a playbook:
 
-`ansible-playbook -i inventory -t <host> playbooks/<playbook_name.yml>`
+`ansible-playbook -i inventory -l <host> playbooks/<playbook_name.yml>`
 
 For example, consider the following host defined at the ssh config file:
 ```
@@ -33,6 +33,15 @@ Host magnetizer.staging
 To secure SSH you can run the following playbook:
 
 `ansible-playbook -i inventory -l magnetizer.staging playbooks/secure_ssh.yml`
+
+### host_list plugin
+With the
+[host_list](https://docs.ansible.com/ansible/latest/plugins/inventory/host_list.html)
+plugin a host can be set as command argument.
+
+Following the host defined on the previous example, the playbook can be run with:
+
+`ansible-playbook -i 'magnet@magnetizer-stg.magnet.cl,' playbooks/secure_ssh.yml`
 
 
 ## Playbooks
@@ -55,6 +64,21 @@ It includes the following tasks:
 
 The last post-task defined in the playbook upgrades system packages through
 apt safe upgrade, it might require a system reboot.
+
+#### Notes on servers providers
+##### AWS EC2
+Within the EC2 instance creation an SSH key must be selected and usually is
+not loaded on the agent running the playbook, there are two alternatives:
+
+1. Add the key selected on aws to the ssh agent: `ssh-add <aws-key.pem>`
+2. Use `--private-key` with `ansible-playbook`:
+
+`ansible-playbook -i inventory -l magnetizer.ec2 playbooks/vps.init.yml
+--private-key ~/.ssh/aws-key.pem`
+
+##### Digital Ocean
+The latest Ubuntu Server 18.04 droplet available on Digital Ocean requires a
+system reboot after upgrading all system packages.
 
 ### developer
 
