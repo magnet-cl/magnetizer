@@ -12,6 +12,29 @@ Once `ansible` is available, the ansible galaxy roles specified on
 [requirements.yml](requirements.yml) are installed (git is required to use
 role versions).
 
+## Inventory
+An [inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
+must be defined to select the hosts you want `ansible` to run against.
+
+The `update_ssh_config.sh` script downloads the inventory plugin
+[ssh_config.py](https://raw.githubusercontent.com/ansible/ansible/stable-2.9/contrib/inventory/ssh_config.py),
+then it obtains the `ssh_config` file from magnet's keygen repository and
+it merges with `~/.ssh/config_local` into `~/.ssh/config`. This allows the
+following syntax when running a playbook:
+
+`ansible-playbook -i inventory -t <host> playbooks/<playbook_name.yml>`
+
+For example, consider the following host defined at the ssh config file:
+```
+Host magnetizer.staging
+    hostname magnetizer-stg.magnet.cl
+    user magnet
+```
+To secure SSH you can run the following playbook:
+
+`ansible-playbook -i inventory -l magnetizer.staging playbooks/secure_ssh.yml`
+
+
 ## Playbooks
 
 ### vps init
@@ -43,6 +66,11 @@ It includes the following roles considering localhost as target:
 * zsh
 * node
 * vim
+
+Since the target is localhost, the playbook can be run without specifying an
+inventory:
+
+`ansible-playbook playbooks/developer.yml`
 
 ### enable SSL
 
