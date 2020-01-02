@@ -1,6 +1,21 @@
 # magnetizer
 This repository is a collection of useful Ansible playbooks and roles.
 
+- [magnetizer](#magnetizer)
+  * [Quickstart](#quickstart)
+  * [Inventory](#inventory)
+    + [host_list plugin](#host-list-plugin)
+  * [Playbooks](#playbooks)
+    + [vps init](#vps-init)
+      - [Notes on servers providers](#notes-on-servers-providers)
+        * [AWS EC2](#aws-ec2)
+        * [Digital Ocean](#digital-ocean)
+    + [developer](#developer)
+    + [enable SSL](#enable-ssl)
+    + [install vim config](#install-vim-config)
+    + [install zsh](#install-zsh)
+    + [secure ssh](#secure-ssh)
+
 ## Quickstart
 The `quickstart.sh` script installs pip (python 3) and the following python packages:
 
