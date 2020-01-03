@@ -1,0 +1,22 @@
+---
+- hosts: all
+  vars_prompt:
+    - name: magnet_username
+      prompt: "Enter user (user@magnet.cl) to add as authorized key"
+      private: no
+  tasks:
+    - name: get github username
+      uri:
+        url: "{{ intranet_url }}"
+        return_content: yes
+      register: intranet_response
+      vars:
+        intranet_url: "https://intranet.magnet.cl/api/1.0/github-user/{{ magnet_username }}"
+
+    - name: authorize ssh key
+      authorized_key:
+        user: "{{ ansible_user_id }}"
+        state: present
+        key: "https://github.com/{{ github_username }}.keys"
+      vars:
+        github_username: "{{ (intranet_response.content | from_json).github_username }}"
