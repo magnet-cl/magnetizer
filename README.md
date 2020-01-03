@@ -15,6 +15,7 @@ This repository is a collection of useful Ansible playbooks and roles.
     + [install vim config](#install-vim-config)
     + [install zsh](#install-zsh)
     + [secure ssh](#secure-ssh)
+    + [authorize ssh key](#authorize-ssh-key)
 
 ## Quickstart
 The `quickstart.sh` script installs pip (python 3) and the following python packages:
@@ -145,7 +146,19 @@ It performs the following tasks:
 
 ### secure ssh
 
-The playbook is at [playbooks/secure_ssh.yml](playbooks/secure_ssh.yml). It
-hardens SSH through a galaxy role from https://dev-sec.io/. Custom
+The playbook is at [playbooks/secure_ssh.yml](playbooks/secure_ssh.yml).
+
+It hardens SSH through a galaxy role from https://dev-sec.io/. Custom
 configurations are set as [role
 variables](playbooks/roles/ssh/defaults/main.yml).
+
+### authorize ssh key
+
+The playbook is at
+[playbooks/authorize_ssh_key.yml](playbooks/authorize_ssh_key.yml).
+
+It prompts for a magnet user to obtain its github username from the [intranet
+platform](https://intranet.magnet.cl). Then uses
+`https://github.com/<username>.keys` as key parameter on the [authorized key
+module](https://docs.ansible.com/ansible/latest/modules/authorized_key_module.html)
+of `ansible`.
