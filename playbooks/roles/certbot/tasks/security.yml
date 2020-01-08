@@ -18,3 +18,5 @@
     name: dev-sec.nginx-hardening
     apply:
       become: yes
+  vars:
+    - nginx_add_header: "{{ nginx_headers }}"
