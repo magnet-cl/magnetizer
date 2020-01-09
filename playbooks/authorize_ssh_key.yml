@@ -11,7 +11,7 @@
         return_content: yes
       register: intranet_response
       vars:
-        intranet_url: "https://intranet.magnet.cl/api/1.0/github-user/{{ magnet_username }}"
+        intranet_url: "https://intranet.magnet.cl/api/1.0/github-user/{{ magnet_username }}/"
 
     - name: authorize ssh key
       authorized_key:
