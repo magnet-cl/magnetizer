@@ -13,10 +13,15 @@
       vars:
         intranet_url: "https://intranet.magnet.cl/api/1.0/github-user/{{ magnet_username }}/"
 
+    - name: fail if github username is not defined
+      fail:
+        msg: "The github username is not defined"
+      when: "not intranet_response.json.github_username"
+
     - name: authorize ssh key
       authorized_key:
         user: "{{ ansible_user_id }}"
         state: present
         key: "https://github.com/{{ github_username }}.keys"
       vars:
-        github_username: "{{ (intranet_response.content | from_json).github_username }}"
+        github_username: "{{ intranet_response.json.github_username }}"
