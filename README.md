@@ -28,6 +28,9 @@ Once `ansible` is available, the ansible galaxy roles specified on
 [requirements.yml](requirements.yml) are installed (git is required to use
 role versions).
 
+The `init_ssh_key.sh` script generates an SSH key (if the default pub key is
+not present), then adds it to the authorized keys of the current user.
+
 ## Inventory
 An [inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
 must be defined to select the hosts you want `ansible` to run against.
@@ -111,6 +114,11 @@ Since the target is localhost, the playbook can be run without specifying an
 inventory:
 
 `ansible-playbook playbooks/developer.yml`
+
+If the user needs a password to run `sudo`, the following option enables
+privilege escalation:
+
+`ansible-playbook playbooks/developer.yml --ask-become-pass`
 
 ### enable SSL
 
