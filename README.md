@@ -9,13 +9,16 @@ This repository is a collection of useful Ansible playbooks and roles.
     + [vps init](#vps-init)
       - [Notes on servers providers](#notes-on-servers-providers)
         * [AWS EC2](#aws-ec2)
-        * [Digital Ocean](#digital-ocean)
+        * [DigitalOcean](#digital-ocean)
     + [developer](#developer)
     + [enable SSL](#enable-ssl)
     + [install vim config](#install-vim-config)
     + [install zsh](#install-zsh)
     + [secure ssh](#secure-ssh)
     + [authorize ssh key](#authorize-ssh-key)
+    + [DigitalOcean playbooks](#digitalocean-playbooks)
+      - [create droplet](#create-droplet)
+      - [create A record](#create-a-record)
 
 ## Quickstart
 The `quickstart.sh` script installs pip (python 3) and the following python packages:
@@ -95,7 +98,7 @@ not loaded on the agent running the playbook, there are two alternatives:
 `ansible-playbook -i inventory -l magnetizer.ec2 playbooks/vps.init.yml
 --private-key ~/.ssh/aws-key.pem`
 
-##### Digital Ocean
+##### DigitalOcean
 The latest Ubuntu Server 18.04 droplet available on Digital Ocean requires a
 system reboot after upgrading all system packages.
 
@@ -126,7 +129,7 @@ The playbook is at [playbooks/enable_ssl.yml](playbooks/enable_ssl.yml), it
 automatically enable HTTPS on the target host through
 [certbot](https://certbot.eff.org/).
 
-The following variables can be se set as extra parameters when the playbook is
+The following variables can be set as extra parameters when the playbook is
 played:
 
 * `certbot_domain`: If unset it will use the host specified in the ansible
@@ -170,3 +173,43 @@ platform](https://intranet.magnet.cl). Then uses
 `https://github.com/<username>.keys` as key parameter on the [authorized key
 module](https://docs.ansible.com/ansible/latest/modules/authorized_key_module.html)
 of `ansible`.
+
+### DigitalOcean playbooks
+In order to use these playbooks, the environment variable
+`DIGITALOCEAN_ACCESS_TOKEN` must be set.
+
+#### create droplet
+
+The playbook is at
+[playbooks/do_create_droplet.yml](playbooks/do_create_droplet.yml), it
+requires the official command line interface for the DigitalOcean API
+[doctl](https://github.com/digitalocean/doctl).
+
+It creates a DigitalOcean droplet and register a DNS record to the obtained
+IP.
+
+The following variables can be set as extra parameters when the playbook is
+played:
+
+* `hostname`: This variable is mandatory (example: "demo.do.magnet.cl").
+* `do_size`: Slug for the droplet size, the default value is `1gb`. The slugs
+  can be listed with `doctl compute size list`.
+* `do_region`: Slug for the region, the default value is `nyc3`. The slugs can
+  be listed with `doctl compute region list`
+* `do_image`: Slug for the droplet image, the default value is
+  `ubuntu-18-04-x64`. The slugs can be listed with `doctl compute image list`.
+* `do_base_domain`: Base domain for the DNS record, the default value is
+`do.magnet.cl`.
+
+#### create A record
+
+The playbook is at
+[playbooks/do_create_a_record.yml](playbooks/do_create_a_record.yml), it
+requires the official command line interface for the DigitalOcean API
+[doctl](https://github.com/digitalocean/doctl).
+
+It will prompt for:
+
+* `domain`: The default value is `do.magnet.cl`.
+* `hostname`: The record, for example `demo`.
+* `ip`: The IP for the record.
