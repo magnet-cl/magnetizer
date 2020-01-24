@@ -46,6 +46,7 @@
       - --redirect
       - -m {{ certbot_admin_email }}
       - -d {{ certbot_domain | default(ansible_host.split('@') | last) }}
+      - --expand
   become: yes
   when: "'nginx' in ansible_facts.packages"
   tags:
