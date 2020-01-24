@@ -132,8 +132,8 @@ automatically enable HTTPS on the target host through
 The following variables can be set as extra parameters when the playbook is
 played:
 
-* `certbot_domain`: If unset it will use the host specified in the ansible
-  inventory.
+* `certbot_domain`: Comma-separated list of domains to obtain a certificate.
+  If unset it will use the host specified in the ansible inventory.
 * `certbot_admin_email`: Email for account notifications.
 
 A related playbook is at
