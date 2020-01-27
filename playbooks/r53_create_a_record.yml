@@ -13,14 +13,6 @@
       private: no
 
   tasks:
-    - name: check if AWS env vars are set
-      assert:
-        that: "lookup('env', '{{ item }}')"
-        fail_msg: "{{ item }} must be set"
-      loop:
-        - AWS_ACCESS_KEY_ID
-        - AWS_SECRET_ACCESS_KEY
-
     - name: create record in AWS Route53
       route53:
         state: present
