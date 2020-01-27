@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  vars_prompt:
+    - name: zone
+      prompt: "Enter zone"
+      default: "aws.magnet.cl"
+      private: no
+    - name: record_name
+      prompt: "Enter name for A record (without zone)"
+      private: no
+    - name: ip
+      prompt: "Enter ip for A record"
+      private: no
+
+  tasks:
+    - name: check if AWS env vars are set
+      assert:
+        that: "lookup('env', '{{ item }}')"
+        fail_msg: "{{ item }} must be set"
+      loop:
+        - AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY
+
+    - name: create record in AWS Route53
+      route53:
+        state: present
+        zone: "{{ zone }}"
+        record: "{{ record_name }}.{{ zone }}"
+        type: A
+        ttl: 3600
+        value: "{{ ip }}"
