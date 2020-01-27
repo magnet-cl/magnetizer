@@ -220,7 +220,7 @@ It will prompt for:
 In order to use these playbooks, the AWS access and secret keys must be set
 through a [boto
 configuration](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html#configuration)
-or with the following environment variables
+or with the following environment variables:
 
 * `AWS_ACCESS_KEY_ID`
 * `AWS_SECRET_ACCESS_KEY`
