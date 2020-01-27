@@ -19,6 +19,8 @@ This repository is a collection of useful Ansible playbooks and roles.
     + [DigitalOcean playbooks](#digitalocean-playbooks)
       - [create droplet](#create-droplet)
       - [create A record](#create-a-record)
+    + [AWS playbooks](#aws-playbooks)
+      - [create A record](#create-a-record)
 
 ## Quickstart
 The `quickstart.sh` script installs pip (python 3) and the following python packages:
@@ -212,4 +214,27 @@ It will prompt for:
 
 * `domain`: The default value is `do.magnet.cl`.
 * `hostname`: The record, for example `demo`.
+* `ip`: The IP for the record.
+
+### AWS playbooks
+In order to use these playbooks, the AWS access and secret keys must be set
+through a [boto
+configuration](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html#configuration)
+or with the following environment variables:
+
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+
+#### create A record
+
+The playbook is at
+[playbooks/r53_create_a_record.yml](playbooks/r53_create_a_record.yml), it
+requires `boto` (ideally the
+[route53](https://docs.ansible.com/ansible/latest/modules/route53_module.html)
+module will use `boto3` as other modules are already doing it).
+
+It will prompt for:
+
+* `zone`: The default value is `aws.magnet.cl`.
+* `name`: The record, for example `demo`.
 * `ip`: The IP for the record.
