@@ -20,3 +20,10 @@
       become: yes
   vars:
     - nginx_add_header: "{{ nginx_headers }}"
+
+- name: unrestrict read on nginx config
+  file:
+    path: "/etc/nginx"
+    mode: "o+r"
+    recurse: yes
+  become: yes
