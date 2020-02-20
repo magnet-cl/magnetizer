@@ -52,6 +52,39 @@
   tags:
     - certbot
 
+- name: register first domain given as fact
+  set_fact:
+    first_certbot_domain: "{{ certbot_domain.split(',')[0] }}"
+
+- name: register enabled sites
+  find:
+    paths: /etc/nginx/sites-enabled
+    file_type: any
+    # contains works only with file as file_type
+    # contains: ".*server_name {{ first_certbot_domain }}.*"
+  register: enabled_sites
+
+- name: set 444 as response on unknown server names
+  blockinfile:
+    path: "{{ item.path }}"
+    insertbefore: "BOF"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK (magnetizer)"
+    block: |
+      server {
+        server_name _;
+
+        listen 443;
+        ssl_certificate /etc/letsencrypt/live/{{ first_certbot_domain }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ first_certbot_domain }}/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+        return 444;
+      }
+  loop: "{{ enabled_sites.files }}"
+  become: yes
+  when: ansible_distribution == "Ubuntu"
+
 - name: secure nginx
   include_tasks: security.yml
   when: "'nginx' in ansible_facts.packages"
