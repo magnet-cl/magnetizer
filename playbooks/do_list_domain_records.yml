@@ -1,0 +1,41 @@
+---
+- hosts: localhost
+  vars:
+    do_access_token: "{{ lookup('env', 'DIGITALOCEAN_ACCESS_TOKEN') }}"
+
+  vars_prompt:
+    - name: domain
+      prompt: "Enter domain to list records"
+      default: "do.magnet.cl"
+      private: no
+
+  tasks:
+    - name: check if digital ocean token env var is set
+      assert:
+        that: "lookup('env', 'DIGITALOCEAN_ACCESS_TOKEN')"
+        fail_msg: "DIGITALOCEAN_ACCESS_TOKEN must be set"
+
+    - name: gather digital ocean account info
+      digital_ocean_account_info:
+        oauth_token: "{{ do_access_token }}"
+      register: account_info
+
+    - name: print account info
+      debug:
+        var: account_info
+
+    - name: list records
+      command:
+        argv:
+          - doctl
+          - compute
+          - domain
+          - records
+          - list
+          - "{{ domain }}"
+      register: records
+      changed_when: false
+
+    - name: print records
+      debug:
+        var: records.stdout_lines
