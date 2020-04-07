@@ -19,6 +19,8 @@ This repository is a collection of useful Ansible playbooks and roles.
     + [DigitalOcean playbooks](#digitalocean-playbooks)
       - [create droplet](#create-droplet)
       - [create A record](#create-a-record)
+      - [list domain records](#list-domain-records)
+      - [delete DNS record](#delete-dns-record)
     + [AWS playbooks](#aws-playbooks)
       - [create A record](#create-a-record)
 
@@ -215,6 +217,30 @@ It will prompt for:
 * `domain`: The default value is `do.magnet.cl`.
 * `hostname`: The record, for example `demo`.
 * `ip`: The IP for the record.
+
+#### list domain records
+
+The playbook is at
+[playbooks/do_list_domain_records.yml](playbooks/do_list_domain_records.yml), it
+requires the official command line interface for the DigitalOcean API
+[doctl](https://github.com/digitalocean/doctl).
+
+It will prompt for:
+
+* `domain`: The default value is `do.magnet.cl`.
+
+#### delete DNS record
+
+The playbook is at
+[playbooks/do_delete_dns_record.yml](playbooks/do_delete_dns_record.yml), it
+requires the official command line interface for the DigitalOcean API
+[doctl](https://github.com/digitalocean/doctl).
+
+It will prompt for:
+
+* `domain`: The default value is `do.magnet.cl`.
+* `record id`: The record id to be deleted, can be obtained with [list domain
+  records](#list-domain-records).
 
 ### AWS playbooks
 In order to use these playbooks, the AWS access and secret keys must be set
