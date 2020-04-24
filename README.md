@@ -16,6 +16,7 @@ This repository is a collection of useful Ansible playbooks and roles.
     + [install zsh](#install-zsh)
     + [secure ssh](#secure-ssh)
     + [authorize ssh key](#authorize-ssh-key)
+    + [deauthorize ssh key](#deauthorize-ssh-key)
     + [DigitalOcean playbooks](#digitalocean-playbooks)
       - [create droplet](#create-droplet)
       - [create A record](#create-a-record)
@@ -177,6 +178,22 @@ platform](https://intranet.magnet.cl). Then uses
 `https://github.com/<username>.keys` as key parameter on the [authorized key
 module](https://docs.ansible.com/ansible/latest/modules/authorized_key_module.html)
 of `ansible`.
+
+### deauthorize ssh key
+
+The playbook is at
+[playbooks/deauthorize_ssh_key.yml](playbooks/deauthorize_ssh_key.yml).
+
+It prompts for a magnet user to obtain its github username from the [intranet
+platform](https://intranet.magnet.cl). Then uses
+`https://github.com/<username>.keys` as key parameter on the [authorized key
+module](https://docs.ansible.com/ansible/latest/modules/authorized_key_module.html)
+of `ansible` with `absent` as state.
+
+The playbook can iterate on all hosts from the [inventory](#inventory) or
+limit it with an expression, for example:
+
+`ansible-playbook -i inventory -l "project*" playbooks/deauthorize_ssh_key.yml`
 
 ### DigitalOcean playbooks
 In order to use these playbooks, the environment variable
