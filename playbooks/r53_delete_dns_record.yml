@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  vars_prompt:
+    - name: zone
+      prompt: "Enter zone"
+      default: "aws.magnet.cl"
+      private: no
+    - name: record_name
+      prompt: "Enter record to delete (without zone)"
+      private: no
+    - name: record_type
+      prompt: "Enter record type"
+      default: "A"
+      private: no
+
+  tasks:
+    - name: retrieve record details from AWS Route53
+      route53:
+        state: get
+        zone: "{{ zone }}"
+        record: "{{ record_name }}.{{ zone }}"
+        type: "{{ record_type }}"
+      register: record_details
+
+    - name: delete record from AWS Route53
+      route53:
+        state: absent
+        zone: "{{ zone }}"
+        record: "{{ record_details.set.record }}"
+        type: "{{ record_details.set.type }}"
+        value: "{{ record_details.set.value }}"
