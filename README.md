@@ -24,6 +24,7 @@ This repository is a collection of useful Ansible playbooks and roles.
       - [delete DNS record](#delete-dns-record)
     + [AWS playbooks](#aws-playbooks)
       - [create A record](#create-a-record)
+      - [delete DNS record](#delete-dns-record-1)
 
 ## Quickstart
 The `quickstart.sh` script installs pip (python 3) and the following python packages:
@@ -279,5 +280,19 @@ module will use `boto3` as other modules are already doing it).
 It will prompt for:
 
 * `zone`: The default value is `aws.magnet.cl`.
-* `name`: The record, for example `demo`.
+* `record_name`: The record without zone, for example `demo`.
 * `ip`: The IP for the record.
+
+#### delete DNS record
+
+The playbook is at
+[playbooks/r53_delete_dns_record.yml](playbooks/r53_delete_dns_record.yml), it
+requires `boto` (ideally the
+[route53](https://docs.ansible.com/ansible/latest/modules/route53_module.html)
+module will use `boto3` as other modules are already doing it).
+
+It will prompt for:
+
+* `zone`: The default value is `aws.magnet.cl`.
+* `record_name`: The record without zone, for example `demo`.
+* `type`: The record type, the default value is `A`.
