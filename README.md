@@ -1,7 +1,8 @@
-# magnetizer
+# Magnetizer
 This repository is a collection of useful Ansible playbooks and roles.
 
 - [magnetizer](#magnetizer)
+  * [Introduction](#introduction)
   * [Quickstart](#quickstart)
   * [Inventory](#inventory)
     + [host_list plugin](#host-list-plugin)
@@ -26,27 +27,50 @@ This repository is a collection of useful Ansible playbooks and roles.
       - [create A record](#create-a-record)
       - [delete DNS record](#delete-dns-record-1)
 
-## Quickstart
-The `quickstart.sh` script installs pip (python 3) and the following python packages:
+## Introduction
+In Magnet we need to configure computers to work with, they may be servers or
+the environment a developer uses. To accomplish this we created a repository
+with bash scripts and Ansible Playbooks and roles. Since we work with Ubuntu,
+the installation scripts and playbooks all start with the assumption that this
+is running in Ubuntu 18.04.
+
+## Installation
+To start using Ansible commands, the `quickstart.sh` script installs pip 
+(python 3) and the following python packages:
 
 * ansible
 * ansible-lint
 * paramiko
 
-Once `ansible` is available, the ansible galaxy roles specified on
+To check if Ansible was installed run `ansible --version`. If this fails, you
+have to restart your computer
+
+Once `ansible` is available, the Ansible galaxy roles specified on
 [requirements.yml](requirements.yml) are installed (git is required to use
 role versions).
 
-The `init_ssh_key.sh` script generates an SSH key (if the default pub key is
-not present), then adds it to the authorized keys of the current user.
+Many of the features Magnetizer has (if not all of them), require an ssh key,
+so you need to generate one. If you don't have one, the `init_ssh_key.sh` 
+script generates an SSH key (if the default pub key is not present), then adds
+it to the authorized keys of the current user. This last part is to run
+Ansible playbooks from your computer, on your computer, without asking for
+authorization credentials.
 
 ## Inventory
 An [inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
 must be defined to select the hosts you want `ansible` to run against.
 
+At Magnet we have a list of all our servers that can
+be downloaded as a [ssh config](https://www.ssh.com/ssh/config/) file that creates 
+aliases to all of them. 
+
+To use an ssh alias to select a host for Ansible, we use an inventory plugin
+from the Ansible [contrib
+files](https://github.com/ansible/ansible/tree/v2.9.7/contrib).
+
 The `update_ssh_config.sh` script downloads the inventory plugin
 [ssh_config.py](https://raw.githubusercontent.com/ansible/ansible/stable-2.9/contrib/inventory/ssh_config.py),
-then it obtains the `ssh_config` file from magnet's keygen repository and
+then it obtains the `ssh_config` file from Magnet's keygen repository and
 it merges with `~/.ssh/config_local` into `~/.ssh/config`. This allows the
 following syntax when running a playbook:
 
@@ -61,6 +85,10 @@ Host magnetizer.staging
 To secure SSH you can run the following playbook:
 
 `ansible-playbook -i inventory -l magnetizer.staging playbooks/secure_ssh.yml`
+
+**Warning** The `update_ssh_config.sh` if you already have a `~/.ssh/config`
+file this will replace it, so if you don't want to loose your custom aliases,
+first move your `~/.ssh/config` to `~/.ssh/config_local`
 
 ### host_list plugin
 With the
@@ -174,7 +202,7 @@ variables](playbooks/roles/ssh/defaults/main.yml).
 The playbook is at
 [playbooks/authorize_ssh_key.yml](playbooks/authorize_ssh_key.yml).
 
-It prompts for a magnet user to obtain its github username from the [intranet
+It prompts for a Magnet user to obtain its github username from the [intranet
 platform](https://intranet.magnet.cl). Then uses
 `https://github.com/<username>.keys` as key parameter on the [authorized key
 module](https://docs.ansible.com/ansible/latest/modules/authorized_key_module.html)
@@ -185,7 +213,7 @@ of `ansible`.
 The playbook is at
 [playbooks/deauthorize_ssh_key.yml](playbooks/deauthorize_ssh_key.yml).
 
-It prompts for a magnet user to obtain its github username from the [intranet
+It prompts for a Magnet user to obtain its github username from the [intranet
 platform](https://intranet.magnet.cl). Then uses
 `https://github.com/<username>.keys` as key parameter on the [authorized key
 module](https://docs.ansible.com/ansible/latest/modules/authorized_key_module.html)
