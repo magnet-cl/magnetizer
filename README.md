@@ -86,9 +86,9 @@ To secure SSH you can run the following playbook:
 
 `ansible-playbook -i inventory -l magnetizer.staging playbooks/secure_ssh.yml`
 
-**Warning** The `update_ssh_config.sh` if you already have a `~/.ssh/config`
-file this will replace it, so if you don't want to loose your custom aliases,
-first move your `~/.ssh/config` to `~/.ssh/config_local`
+**Warning** if you already have a `~/.ssh/config` file, `update_ssh_config.sh` 
+will replace it. To avoid this, first move your `~/.ssh/config` to 
+`~/.ssh/config_local`
 
 ### host_list plugin
 With the
