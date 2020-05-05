@@ -141,7 +141,7 @@ It includes the following tasks:
 * Install vim and [vim_config](https://github.com/magnet-cl/Vim_config).
 
 The last post-task defined in the playbook upgrades system packages through
-apt safe upgrade, it might require a system reboot.
+apt safe upgrade, it might require a shell restart or a session restart.
 
 #### Notes on servers providers
 ##### AWS EC2
