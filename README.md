@@ -7,11 +7,11 @@ This repository is a collection of useful Ansible playbooks and roles.
   * [Inventory](#inventory)
     + [host_list plugin](#host-list-plugin)
   * [Playbooks](#playbooks)
+    + [developer](#developer)
     + [vps init](#vps-init)
       - [Notes on servers providers](#notes-on-servers-providers)
         * [AWS EC2](#aws-ec2)
         * [DigitalOcean](#digital-ocean)
-    + [developer](#developer)
     + [enable SSL](#enable-ssl)
     + [install vim config](#install-vim-config)
     + [install zsh](#install-zsh)
@@ -102,6 +102,28 @@ Following the host defined on the previous example, the playbook can be run with
 
 ## Playbooks
 
+### developer
+
+The playbook is at [playbooks/developer.yml](playbooks/developer.yml).
+
+It includes the following roles considering localhost as target:
+
+* common/main
+* zsh
+* node
+* vim
+
+Since the target is localhost, the playbook can be run without specifying an
+inventory:
+
+`ansible-playbook playbooks/developer.yml`
+
+If the user needs a password to run `sudo`, the following option enables
+privilege escalation:
+
+`ansible-playbook playbooks/developer.yml --ask-become-pass`
+
+
 ### vps init
 
 The playbook is at [playbooks/vps_init.yml](playbooks/vps_init.yml).
@@ -135,27 +157,6 @@ not loaded on the agent running the playbook, there are two alternatives:
 ##### DigitalOcean
 The latest Ubuntu Server 18.04 droplet available on Digital Ocean requires a
 system reboot after upgrading all system packages.
-
-### developer
-
-The playbook is at [playbooks/developer.yml](playbooks/developer.yml).
-
-It includes the following roles considering localhost as target:
-
-* common/main
-* zsh
-* node
-* vim
-
-Since the target is localhost, the playbook can be run without specifying an
-inventory:
-
-`ansible-playbook playbooks/developer.yml`
-
-If the user needs a password to run `sudo`, the following option enables
-privilege escalation:
-
-`ansible-playbook playbooks/developer.yml --ask-become-pass`
 
 ### enable SSL
 
