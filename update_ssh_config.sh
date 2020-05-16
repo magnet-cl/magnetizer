@@ -6,6 +6,22 @@ function print_green(){
     echo -e "\033[32m$1\033[39m"
 }
 
+case "$(uname -s)" in
+
+   Darwin)
+     OS='Darwin'
+     ;;
+
+   Linux)
+     OS='Linux'
+     ;;
+
+   *)
+    echo "OS not supported"
+    exit
+    ;;
+esac
+
 REPO='git@bitbucket.org/magnet-cl/keygen.git'
 SSH_CONFIG_FILE='ssh_config'
 
@@ -16,7 +32,12 @@ chmod +x ssh_config.py
 mkdir -p inventory
 mv ssh_config.py inventory/
 print_green "Setting python3 as interpreter"
-sed -i 's/env python$/env python3/' inventory/ssh_config.py
+
+if [ "$OS" == "Darwin" ] ; then
+    sed -i .bak 's/env python$/env python3/' inventory/ssh_config.py
+else
+    sed -i 's/env python$/env python3/' inventory/ssh_config.py
+fi
 
 print_green "Obtaining ssh config from keygen repository (read access required)"
 git archive --remote=ssh://$REPO master $SSH_CONFIG_FILE | tar -x
