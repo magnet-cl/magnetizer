@@ -21,12 +21,21 @@
 - name: generate SSH key
   openssh_keypair:
     path: "~{{ item.username }}/.ssh/id_rsa"
+    owner: "{{ item.username }}"
   with_items:
     - "{{ users }}"
   become: yes
-  become_user: "{{ item.username }}"
   tags:
     - init
+
+- name: install acl package to allow ownership change
+  apt:
+    name: acl
+    state: present
+  become: yes
+  when:
+    - ansible_user_id != "root"
+    - ansible_distribution == "Ubuntu"
 
 - name: add github to known hosts
   known_hosts:
