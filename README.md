@@ -151,7 +151,7 @@ not loaded on the agent running the playbook, there are two alternatives:
 1. Add the key selected on aws to the ssh agent: `ssh-add <aws-key.pem>`
 2. Use `--private-key` with `ansible-playbook`:
 
-`ansible-playbook -i inventory -l magnetizer.ec2 playbooks/vps.init.yml
+`ansible-playbook -i inventory -l magnetizer.ec2 playbooks/vps_init.yml
 --private-key ~/.ssh/aws-key.pem`
 
 ##### DigitalOcean
