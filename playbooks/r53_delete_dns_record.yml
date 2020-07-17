@@ -29,3 +29,4 @@
         record: "{{ record_details.set.record }}"
         type: "{{ record_details.set.type }}"
         value: "{{ record_details.set.value }}"
+        ttl: "{{ record_details.set.ttl }}"
