@@ -123,6 +123,11 @@ privilege escalation:
 
 `ansible-playbook playbooks/developer.yml --ask-become-pass`
 
+If the target is running WSL/WSL2 the `ntp` tag must be skipped, since the
+system clock is already managed.
+
+`ansible-playbook playbooks/developer.yml --skip-tags ntp`
+
 
 ### vps init
 
