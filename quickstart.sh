@@ -40,9 +40,11 @@ else
     sudo apt install --yes python3-pip git
 
     print_green "Installing ansible"
-    sudo -H pip3 install ansible ansible-lint paramiko
+    sudo -H pip3 install ansible ansible-lint paramiko jmespath
 
+    print_green "To create droplets install digital ocean cli with sudo snap install doctl"
 fi
 
 print_green "Installing ansible-galaxy requirements"
 ansible-galaxy install -r requirements.yml
+

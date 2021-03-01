@@ -3,9 +3,8 @@
   hosts: all
   vars:
     github_users_as_initial_admins:  # TODO get list dinamically
-      - thagat
+      - imunizaga
       - wooo-
-      - taandrighetti
       - jslopez
 
   vars_prompt:

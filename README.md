@@ -180,6 +180,12 @@ A related playbook is at
 [playbooks/secure_nginx.yml](playbooks/secure_nginx.yml), it hardens nginx
 through a galaxy role from https://dev-sec.io/.
 
+Example: 
+
+```shell
+ansible-playbook -i inventory -l "project*" playbooks/enable_ssl.yml -e certbot_domain="domain*"
+```
+
 ### install vim config
 
 The playbook is at
