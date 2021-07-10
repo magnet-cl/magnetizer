@@ -1,0 +1,10 @@
+---
+- name: use geerlingguy role to install docker
+  hosts: all
+  roles:
+    - role: geerlingguy.docker
+      become: yes
+      vars:
+        docker_compose_version: "1.29.2"
+        docker_users:
+          - "{{ ansible_user_id }}"

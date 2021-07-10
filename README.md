@@ -201,6 +201,10 @@ It performs the following tasks:
 [gantsign.oh-my-zsh](https://galaxy.ansible.com/gantsign/oh-my-zsh).
 * Upload and set custom set of plugins.
 
+### install docker
+The playbook is at [playbooks/install_docker.yml](playbooks/install_docker.yml). It uses the ansible galaxy role [geerlingguy.docker](https://galaxy.ansible.com/geerlingguy/docker).
+
+It configures docker so you can run it without root, and also installs docker-compose.
 ### secure ssh
 
 The playbook is at [playbooks/secure_ssh.yml](playbooks/secure_ssh.yml).
