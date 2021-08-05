@@ -202,9 +202,16 @@ It performs the following tasks:
 * Upload and set custom set of plugins.
 
 ### install docker
+
+To run it in your own computer, you will need to specify the inventory for this one:
+```
+ansible-playbook -i localhost, -l localhost -c local --ask-become-pass playbooks/install_docker.yml
+```
+
 The playbook is at [playbooks/install_docker.yml](playbooks/install_docker.yml). It uses the ansible galaxy role [geerlingguy.docker](https://galaxy.ansible.com/geerlingguy/docker).
 
-It configures docker so you can run it without root, and also installs docker-compose.
+It configures docker so you can run it without root, and also installs docker-compose. You will need to reboot for the group change to take effect (or just reconnect if using ssh).
+
 ### secure ssh
 
 The playbook is at [playbooks/secure_ssh.yml](playbooks/secure_ssh.yml).

@@ -8,3 +8,7 @@
         docker_compose_version: "1.29.2"
         docker_users:
           - "{{ ansible_user_id }}"
+  tasks:
+    - name: show hint
+      debug:
+        msg: Done. Please reboot so you can use docker without sudo (or just reconnect if using ssh).
