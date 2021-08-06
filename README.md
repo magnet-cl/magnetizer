@@ -1,30 +1,31 @@
 # Magnetizer
 This repository is a collection of useful Ansible playbooks and roles.
 
-- [magnetizer](#magnetizer)
-  * [Introduction](#introduction)
-  * [Quickstart](#quickstart)
-  * [Inventory](#inventory)
-    + [host_list plugin](#host-list-plugin)
-  * [Playbooks](#playbooks)
-    + [developer](#developer)
-    + [vps init](#vps-init)
+- [Magnetizer](#magnetizer)
+  - [Introduction](#introduction)
+  - [Installation](#installation)
+  - [Inventory](#inventory)
+    - [host_list plugin](#host_list-plugin)
+  - [Playbooks](#playbooks)
+    - [developer](#developer)
+    - [vps init](#vps-init)
       - [Notes on servers providers](#notes-on-servers-providers)
-        * [AWS EC2](#aws-ec2)
-        * [DigitalOcean](#digital-ocean)
-    + [enable SSL](#enable-ssl)
-    + [install vim config](#install-vim-config)
-    + [install zsh](#install-zsh)
-    + [secure ssh](#secure-ssh)
-    + [authorize ssh key](#authorize-ssh-key)
-    + [deauthorize ssh key](#deauthorize-ssh-key)
-    + [DigitalOcean playbooks](#digitalocean-playbooks)
+        - [AWS EC2](#aws-ec2)
+        - [DigitalOcean](#digitalocean)
+    - [enable SSL](#enable-ssl)
+    - [install vim config](#install-vim-config)
+    - [install zsh](#install-zsh)
+    - [install docker](#install-docker)
+    - [secure ssh](#secure-ssh)
+    - [authorize ssh key](#authorize-ssh-key)
+    - [deauthorize ssh key](#deauthorize-ssh-key)
+    - [DigitalOcean playbooks](#digitalocean-playbooks)
       - [create droplet](#create-droplet)
       - [create A record](#create-a-record)
       - [list domain records](#list-domain-records)
       - [delete DNS record](#delete-dns-record)
-    + [AWS playbooks](#aws-playbooks)
-      - [create A record](#create-a-record)
+    - [AWS playbooks](#aws-playbooks)
+      - [create A record](#create-a-record-1)
       - [delete DNS record](#delete-dns-record-1)
 
 ## Introduction
@@ -35,7 +36,7 @@ the installation scripts and playbooks all start with the assumption that this
 is running in Ubuntu 18.04.
 
 ## Installation
-To start using Ansible commands, the `quickstart.sh` script installs pip 
+To start using Ansible commands, the `quickstart.sh` script installs pip
 (python 3) and the following python packages:
 
 * ansible
@@ -50,7 +51,7 @@ Once `ansible` is available, the Ansible galaxy roles specified on
 role versions).
 
 Many of the features Magnetizer has (if not all of them), require an ssh key,
-so you need to generate one. If you don't have one, the `init_ssh_key.sh` 
+so you need to generate one. If you don't have one, the `init_ssh_key.sh`
 script generates an SSH key (if the default pub key is not present), then adds
 it to the authorized keys of the current user. This last part is to run
 Ansible playbooks from your computer, on your computer, without asking for
@@ -61,8 +62,8 @@ An [inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_inventor
 must be defined to select the hosts you want `ansible` to run against.
 
 At Magnet we have a list of all our servers that can
-be downloaded as a [ssh config](https://www.ssh.com/ssh/config/) file that creates 
-aliases to all of them. 
+be downloaded as a [ssh config](https://www.ssh.com/ssh/config/) file that creates
+aliases to all of them.
 
 To use an ssh alias to select a host for Ansible, we use an inventory plugin
 from the Ansible [contrib
@@ -86,8 +87,8 @@ To secure SSH you can run the following playbook:
 
 `ansible-playbook -i inventory -l magnetizer.staging playbooks/secure_ssh.yml`
 
-**Warning** if you already have a `~/.ssh/config` file, `update_ssh_config.sh` 
-will replace it. To avoid this, first move your `~/.ssh/config` to 
+**Warning** if you already have a `~/.ssh/config` file, `update_ssh_config.sh`
+will replace it. To avoid this, first move your `~/.ssh/config` to
 `~/.ssh/config_local`
 
 ### host_list plugin
@@ -180,7 +181,7 @@ A related playbook is at
 [playbooks/secure_nginx.yml](playbooks/secure_nginx.yml), it hardens nginx
 through a galaxy role from https://dev-sec.io/.
 
-Example: 
+Example:
 
 ```shell
 ansible-playbook -i inventory -l "project*" playbooks/enable_ssl.yml -e certbot_domain="domain*"
