@@ -28,7 +28,7 @@
   apt:
     name:
       - certbot
-      - python-certbot-nginx
+      - python3-certbot-nginx
   become: yes
   when:
     - "'nginx' in ansible_facts.packages"
