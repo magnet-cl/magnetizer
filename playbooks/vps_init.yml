@@ -6,6 +6,7 @@
       - imunizaga
       - wooo-
       - jslopez
+      - taandrighetti
 
   vars_prompt:
     - name: admin_user
