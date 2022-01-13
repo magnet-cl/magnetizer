@@ -271,7 +271,7 @@ played:
 * `do_region`: Slug for the region, the default value is `nyc3`. The slugs can
   be listed with `doctl compute region list`
 * `do_image`: Slug for the droplet image, the default value is
-  `ubuntu-18-04-x64`. The slugs can be listed with `doctl compute image list`.
+  `ubuntu-20-04-x64`. The slugs can be listed with `doctl compute image list`.
 * `do_base_domain`: Base domain for the DNS record, the default value is
 `do.magnet.cl`.
 
