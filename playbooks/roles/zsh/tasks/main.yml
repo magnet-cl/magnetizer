@@ -6,12 +6,15 @@
     oh_my_zsh_plugins:
       - autojump
       - command-not-found
+      - docker
+      - docker-compose
       - encode64
       - git
       - git-flow
       - github
       - history-substring-search
       - pip
+      - systemd
     oh_my_zsh_theme: dieter
   tags: zsh
 
