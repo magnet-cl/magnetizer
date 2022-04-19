@@ -37,6 +37,7 @@
     - name: add admin user with sudo as additional group
       user:
         name: "{{ admin_user }}"
+        group: "{{ admin_user }}"   # Without this, gid=100(users)
         groups: "{{ admin_user }},sudo"
         append: yes
         password: "{{ admin_user_password }}"
