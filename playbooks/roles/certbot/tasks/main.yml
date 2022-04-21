@@ -12,23 +12,11 @@
   package_facts:
     manager: auto
 
-- name: add certbot ppa
-  apt_repository:
-    repo: 'ppa:certbot/certbot'
-    codename: bionic
-    state: present
-  become: yes
-  when:
-    - "'nginx' in ansible_facts.packages"
-    -  ansible_distribution == "Ubuntu"
-  tags:
-    - certbot
-
 - name: install certbot and nginx plugin
   apt:
     name:
       - certbot
-      - python-certbot-nginx
+      - python3-certbot-nginx
   become: yes
   when:
     - "'nginx' in ansible_facts.packages"
