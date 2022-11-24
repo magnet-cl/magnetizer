@@ -85,6 +85,14 @@ To secure SSH you can run the following playbook:
 
 `ansible-playbook -i inventory -l magnetizer.staging playbooks/secure_ssh.yml`
 
+If you need to target the root user, instead of doing it manually with:
+
+`ansible-playbook -i root@magnetizer-stg.magnet.cl, -l root@magnetizer-stg.magnet.cl playbooks/init_vps.yml`
+
+you can use `inventory_root`:
+
+`ansible-playbook -i inventory_root -l magnetizer.staging playbooks/init_vps.yml`
+
 **Warning** if you already have a `~/.ssh/config` file, `update_ssh_config.sh`
 will replace it. To avoid this, first move your `~/.ssh/config` to
 `~/.ssh/config_local`
