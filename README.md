@@ -69,9 +69,7 @@ To use an ssh alias to select a host for Ansible, we use an inventory plugin
 from the Ansible [contrib
 files](https://github.com/ansible/ansible/tree/v2.9.7/contrib).
 
-The `update_ssh_config.sh` script downloads the inventory plugin
-[ssh_config.py](https://raw.githubusercontent.com/ansible/ansible/stable-2.9/contrib/inventory/ssh_config.py),
-then it obtains the `ssh_config` file from Magnet's keygen repository and
+The `update_ssh_config.sh` script obtains the `ssh_config` file from Magnet's keygen repository and
 it merges with `~/.ssh/config_local` into `~/.ssh/config`. This allows the
 following syntax when running a playbook:
 

@@ -25,20 +25,6 @@ esac
 REPO='git@bitbucket.org/magnet-cl/keygen.git'
 SSH_CONFIG_FILE='ssh_config'
 
-print_green "Downloading inventory script ssh_config.py from ansible contrib"
-wget https://raw.githubusercontent.com/ansible/ansible/stable-2.9/contrib/inventory/ssh_config.py
-
-chmod +x ssh_config.py
-mkdir -p inventory
-mv ssh_config.py inventory/
-print_green "Setting python3 as interpreter"
-
-if [ "$OS" == "Darwin" ] ; then
-    sed -i .bak 's/env python$/env python3/' inventory/ssh_config.py
-else
-    sed -i 's/env python$/env python3/' inventory/ssh_config.py
-fi
-
 print_green "Obtaining ssh config from keygen repository (read access required)"
 git archive --remote=ssh://$REPO master $SSH_CONFIG_FILE | tar -x
 mv -f $SSH_CONFIG_FILE ~/.ssh/config_magnet
