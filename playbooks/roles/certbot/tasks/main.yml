@@ -1,7 +1,7 @@
 ---
-- name: add python-apt (package_facts dependency on Ubuntu)
+- name: add python3-apt (package_facts dependency on Ubuntu)
   apt:
-    name: python-apt
+    name: python3-apt
     state: present
   become: yes
   when: ansible_distribution == "Ubuntu"
