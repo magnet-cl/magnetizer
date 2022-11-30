@@ -38,7 +38,10 @@
       user:
         name: "{{ admin_user }}"
         group: "{{ admin_user }}"   # Without this, gid=100(users)
-        groups: "{{ admin_user }},sudo"
+        groups:
+          - "{{ admin_user }}"
+          - sudo
+          - adm   # allows reading /var/log/nginx/* without sudo
         append: yes
         password: "{{ admin_user_password }}"
         update_password: on_create
