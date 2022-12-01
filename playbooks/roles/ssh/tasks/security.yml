@@ -1,7 +1,7 @@
 ---
 - name: ssh hardening
   include_role:
-    name: dev-sec.ssh-hardening
+    name: devsec.hardening/devsec.hardening/roles/ssh_hardening
     apply:
       become: yes
   vars:

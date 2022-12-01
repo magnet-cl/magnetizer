@@ -46,5 +46,4 @@ else
 fi
 
 print_green "Installing ansible-galaxy requirements"
-ansible-galaxy install -r requirements.yml
-
+ansible-galaxy install -r requirements.yml --force
