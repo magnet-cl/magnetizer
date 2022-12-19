@@ -152,6 +152,8 @@ It includes the following tasks:
 * Install node.js (LTS).
 * Install vim and [vim_config](https://github.com/magnet-cl/Vim_config).
 
+To run it against a server with passworded `sudo`, add `--ask-become-pass` (otherwise it fails with _Missing sudo password_).
+
 The last post-task defined in the playbook upgrades system packages through
 apt safe upgrade, it might require a shell restart or a session restart.
 
