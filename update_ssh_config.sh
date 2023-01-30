@@ -42,12 +42,12 @@ mv -f $SSH_CONFIG_FILE ~/.ssh/config.d/magnet
 
 if [ ! -z "$ADD_MACOS_CONFIG_FLAG" ]; then
 	print_green "Adding MacOS configuration to hosts"
-	perl -pi -e 's/(.*)user magnet/&\n\1AddKeysToAgent yes\n\1UseKeychain yes\n\1IdentitiesOnly yes/g' ~/.ssh/config.d/magnet
+	perl -pi -e 's/(.*)user magnet/&\n\1AddKeysToAgent yes\n\1UseKeychain yes/g' ~/.ssh/config.d/magnet
 fi
 
 if [ ! -z "$IDENTITY_FILE_PATH" ]; then
 	print_green "Adding identity file to host configuration"
-	perl -pi -e "s|(.*)user magnet|&\n\1IdentityFile $IDENTITY_FILE_PATH|g" ~/.ssh/config.d/magnet
+	perl -pi -e "s|(.*)user magnet|&\n\1IdentityFile $IDENTITY_FILE_PATH\n\1IdentitiesOnly yes|g" ~/.ssh/config.d/magnet
 fi
 
 if grep -Fxq "Include config.d/*" ~/.ssh/config; then
