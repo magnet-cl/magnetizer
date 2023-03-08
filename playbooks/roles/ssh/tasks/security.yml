@@ -8,7 +8,7 @@
     - sftp_enabled: true
 
     # "no real advantage without denied shell access":
-    - ssh_allow_tcp_forwarding: true
+    - ssh_allow_tcp_forwarding: 'yes'
     - ssh_allow_agent_forwarding: true
   tags:
     - security
