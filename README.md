@@ -256,6 +256,13 @@ limit it with an expression, for example:
 
 `ansible-playbook -i inventory -l "project*" playbooks/deauthorize_ssh_key.yml`
 
+### update bitbucket ssh host key
+
+Bitbucket is going to rotate their ssh key. This playbook automates the process described in https://bitbucket.org/blog/ssh-host-key-changes.
+
+The playbook is at
+[playbooks/bitbucket_ssh_host_key.yml](playbooks/bitbucket_ssh_host_key.yml).
+
 ### DigitalOcean playbooks
 In order to use these playbooks, the environment variable
 `DIGITALOCEAN_ACCESS_TOKEN` must be set.

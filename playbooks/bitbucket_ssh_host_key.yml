@@ -1,0 +1,33 @@
+- hosts: all
+  gather_facts: false   # Speedup
+  vars:
+    old_key: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
+    new_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazEu89wgQZ4bqs3d63QSMzYVa0MuJ2e2gKTKqu+UUO   # From https://bitbucket.org/site/ssh
+  tasks:
+    - name: Add new ssh key
+      ansible.builtin.known_hosts:
+        name: bitbucket.org
+        key: bitbucket.org {{ new_key }}
+        state: present
+        hash_host: false
+
+    # Removing the old key with "ansible.builtin.known_hosts:" using "name: bitbucket.org"
+    # leaves the old key in 18.205.93.0 and other IPs, which then fail with:
+    # "Warning: the ED25519 host key for 'bitbucket.org' differs from the key for the IP address '18.205.93.0'".
+    # So delete them with shell instead:
+
+    - name: Check for old key presence
+      command: grep "{{ old_key }}" ~/.ssh/known_hosts
+      failed_when: false    # Don't fail task on rc=1 (string not found)
+      changed_when: false   # Report as "ok" instead of "changed"
+      register: old_key_grep
+
+    - name: Delete old keys
+      when: old_key_grep.rc == 0
+      shell:
+        executable: /bin/bash
+        cmd: |
+          cp ~/.ssh/known_hosts{,.old}
+          grep -v "{{ old_key }}" ~/.ssh/known_hosts >~/.ssh/known_hosts.new
+          mv ~/.ssh/known_hosts{.new,}
+      changed_when: true  # Explicitly report as "changed"
