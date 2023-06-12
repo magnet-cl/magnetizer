@@ -263,6 +263,11 @@ Bitbucket is going to rotate their ssh key. This playbook automates the process 
 The playbook is at
 [playbooks/bitbucket_ssh_host_key.yml](playbooks/bitbucket_ssh_host_key.yml).
 
+To fix your own computer, run:
+```
+ansible-playbook -i localhost, -l localhost -c local playbooks/bitbucket_ssh_host_key.yml
+```
+
 ### DigitalOcean playbooks
 In order to use these playbooks, the environment variable
 `DIGITALOCEAN_ACCESS_TOKEN` must be set.
