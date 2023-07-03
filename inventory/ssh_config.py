@@ -52,7 +52,7 @@ import paramiko
 
 from ansible.module_utils.common._collections_compat import MutableSequence
 
-SSH_CONF = '~/.ssh/config'
+SSH_CONF = '~/.ssh/config.d/magnet'
 
 _key = 'ssh_config'
 
