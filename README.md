@@ -69,9 +69,7 @@ To use an ssh alias to select a host for Ansible, we use an inventory plugin
 from the Ansible [contrib
 files](https://github.com/ansible/ansible/tree/v2.9.7/contrib).
 
-The `update_ssh_config.sh` script downloads the inventory plugin
-[ssh_config.py](https://raw.githubusercontent.com/ansible/ansible/stable-2.9/contrib/inventory/ssh_config.py),
-then it obtains the `ssh_config` file from Magnet's keygen repository and
+The `update_ssh_config.sh` script obtains the `ssh_config` file from Magnet's keygen repository and
 it merges with `~/.ssh/config_local` into `~/.ssh/config`. This allows the
 following syntax when running a playbook:
 
@@ -86,6 +84,14 @@ Host magnetizer.staging
 To secure SSH you can run the following playbook:
 
 `ansible-playbook -i inventory -l magnetizer.staging playbooks/secure_ssh.yml`
+
+If you need to target the root user, instead of doing it manually with:
+
+`ansible-playbook -i root@magnetizer-stg.magnet.cl, -l root@magnetizer-stg.magnet.cl playbooks/init_vps.yml`
+
+you can use `inventory_root`:
+
+`ansible-playbook -i inventory_root -l magnetizer.staging playbooks/init_vps.yml`
 
 **Warning** if you already have a `~/.ssh/config` file, `update_ssh_config.sh`
 will replace it. To avoid this, first move your `~/.ssh/config` to
