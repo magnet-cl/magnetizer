@@ -1,19 +1,33 @@
-- name: geerlingguy.docker
-  src: https://github.com/geerlingguy/ansible-role-docker
-  version: 67e50e9af050e89c7d2d323f02a02b2d6812c9c5 # 6.1.0
+collections:
+  - name: amazon.aws
+    version: ">=5.1.0"
 
-- name: geerlingguy.nodejs
-  src: https://github.com/geerlingguy/ansible-role-nodejs
-  version: f9f23697e4c47f170b3ddca6956e85984a4bc0b0 # 6.1.0
+  - name: ansible.posix
+    version: ">=1.5.4"
 
-- name: gantsign.oh-my-zsh
-  src: https://github.com/gantsign/ansible-role-oh-my-zsh
-  version: 3f63fc534779f5914f13bebb13c8a0dd23dbbc86 # 2.4.0
+  - name: community.crypto
+    version: ">=2.10.0"
 
-- name: geerlingguy.swap
-  src: https://github.com/geerlingguy/ansible-role-swap
-  version: 3f23c5818ff9c0147fe1793dad6d3b33050035ed # 1.0.2
+  - name: community.digitalocean
+    version: ">=1.22.0"
 
-- name: devsec.hardening
-  src: https://github.com/dev-sec/ansible-collection-hardening
-  version: 99fe8b6969ba01936c494a15d25ec344e4015399 # 8.3.0
+roles:
+  - name: geerlingguy.docker
+    src: https://github.com/geerlingguy/ansible-role-docker
+    version: 67e50e9af050e89c7d2d323f02a02b2d6812c9c5 # 6.1.0
+
+  - name: geerlingguy.nodejs
+    src: https://github.com/geerlingguy/ansible-role-nodejs
+    version: f9f23697e4c47f170b3ddca6956e85984a4bc0b0 # 6.1.0
+
+  - name: gantsign.oh-my-zsh
+    src: https://github.com/gantsign/ansible-role-oh-my-zsh
+    version: 3f63fc534779f5914f13bebb13c8a0dd23dbbc86 # 2.4.0
+
+  - name: geerlingguy.swap
+    src: https://github.com/geerlingguy/ansible-role-swap
+    version: 3f23c5818ff9c0147fe1793dad6d3b33050035ed # 1.0.2
+
+  - name: devsec.hardening
+    src: https://github.com/dev-sec/ansible-collection-hardening
+    version: 99fe8b6969ba01936c494a15d25ec344e4015399 # 8.3.0
