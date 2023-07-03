@@ -28,24 +28,24 @@ done
 
 print_green "Obtaining ssh config from keygen repository (read access required)"
 git archive --remote=ssh://$REPO master $SSH_CONFIG_FILE | tar -x
-mkdir -p ~/.ssh/config.d
-mv -f $SSH_CONFIG_FILE ~/.ssh/config.d/magnet
+mkdir -p $HOME/.ssh/config.d
+mv -f $SSH_CONFIG_FILE $HOME/.ssh/config.d/magnet
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 	print_green "Adding MacOS configuration to hosts"
-	perl -pi -e 's/(.*)user magnet/$&\n\1AddKeysToAgent yes\n\1UseKeychain yes/g' ~/.ssh/config.d/magnet
+	perl -pi -e 's/(.*)user magnet/$&\n\1AddKeysToAgent yes\n\1UseKeychain yes/g' $HOME/.ssh/config.d/magnet
 fi
 
 if [ ! -z "$IDENTITY_FILE_PATH" ]; then
 	print_green "Adding identity file to host configuration"
-	perl -pi -e "s|(.*)user magnet|\$&\n\1IdentityFile $IDENTITY_FILE_PATH\n\1IdentitiesOnly yes|g" ~/.ssh/config.d/magnet
+	perl -pi -e "s|(.*)user magnet|\$&\n\1IdentityFile $IDENTITY_FILE_PATH\n\1IdentitiesOnly yes|g" $HOME/.ssh/config.d/magnet
 fi
 
-if grep -Fxq "Include config.d/*" ~/.ssh/config; then
-	# code if found
-	print_green "config.d/* already included in ssh config"
+if grep -Fxq "Include config.d/*" $HOME/.ssh/config; then
+  # code if found
+  print_green "config.d/* already included in ssh config"
 else
-	# code if not found
-	print_green "Including config.d/* in ssh config"
-	perl -pi -e 's/^/Include config.d\/*\n\n/' ~/.ssh/config
+  # code if not found
+  print_green "Including config.d/* in ssh config"
+  perl -pi -e 's/^/Include config.d\/*\n\n/' $HOME/.ssh/config
 fi
