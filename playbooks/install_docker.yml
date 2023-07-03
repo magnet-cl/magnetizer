@@ -5,7 +5,8 @@
     - role: geerlingguy.docker
       become: yes
       vars:
-        docker_compose_version: "1.29.2"
+        docker_install_compose: false         # Don't install standalone binary, which is now not recommended
+        docker_install_compose_plugin: true   # Use the plugin instead
         docker_users:
           - "{{ ansible_user_id }}"
   tasks:

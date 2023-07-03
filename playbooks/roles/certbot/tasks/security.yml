@@ -6,3 +6,4 @@
   vars:
     - nginx_add_header: "{{ nginx_headers }}"
     - nginx_owner_group: "{{ ansible_real_group_id }}"
+    - nginx_dh_size: "2048"
