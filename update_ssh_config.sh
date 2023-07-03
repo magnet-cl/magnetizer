@@ -33,7 +33,7 @@ mv -f $SSH_CONFIG_FILE $HOME/.ssh/config.d/magnet
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 	print_green "Adding MacOS configuration to hosts"
-	perl -pi -e 's/(.*)user magnet/$&\n\1AddKeysToAgent yes\n\1UseKeychain yes/g' $HOME/.ssh/config.d/magnet
+	perl -pi -e 's/(.*)user .*/$&\n\1AddKeysToAgent yes\n\1UseKeychain yes/g' $HOME/.ssh/config.d/magnet
 fi
 
 if [ ! -z "$IDENTITY_FILE_PATH" ]; then
@@ -42,16 +42,16 @@ if [ ! -z "$IDENTITY_FILE_PATH" ]; then
 fi
 
 if [ ! -f "$HOME/.ssh/config" ]; then
-  print_green "Creating ssh config"
-  cat > $HOME/.ssh/config << EOF
+	print_green "Creating ssh config"
+	cat >$HOME/.ssh/config <<EOF
 Include config.d/*
 
 EOF
 elif ! grep -Fxq "Include config.d/*" $HOME/.ssh/config; then
-  # code if not found
-  print_green "Including config.d/* in ssh config"
-  echo -e "Include config.d/*\n$(cat $HOME/.ssh/config)" >> $HOME/.ssh/config
+	# code if not found
+	print_green "Including config.d/* in ssh config"
+	echo -e "Include config.d/*\n$(cat $HOME/.ssh/config)" >$HOME/.ssh/config
 else
-  # code if found
-  print_green "config.d/* already included in ssh config"
+	# code if found
+	print_green "config.d/* already included in ssh config"
 fi
