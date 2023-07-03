@@ -41,11 +41,17 @@ if [ ! -z "$IDENTITY_FILE_PATH" ]; then
 	perl -pi -e "s|(.*)user magnet|\$&\n\1IdentityFile $IDENTITY_FILE_PATH\n\1IdentitiesOnly yes|g" $HOME/.ssh/config.d/magnet
 fi
 
-if grep -Fxq "Include config.d/*" $HOME/.ssh/config; then
-  # code if found
-  print_green "config.d/* already included in ssh config"
-else
+if [ ! -f "$HOME/.ssh/config" ]; then
+  print_green "Creating ssh config"
+  cat > $HOME/.ssh/config << EOF
+Include config.d/*
+
+EOF
+elif ! grep -Fxq "Include config.d/*" $HOME/.ssh/config; then
   # code if not found
   print_green "Including config.d/* in ssh config"
-  perl -pi -e 's/^/Include config.d\/*\n\n/' $HOME/.ssh/config
+  echo -e "Include config.d/*\n$(cat $HOME/.ssh/config)" >> $HOME/.ssh/config
+else
+  # code if found
+  print_green "config.d/* already included in ssh config"
 fi
