@@ -2,7 +2,7 @@
 - hosts: all
   vars_prompt:
     - name: magnet_username
-      prompt: "Enter user (user@magnet.cl) to add as authorized key"
+      prompt: "Enter your Magnet username (as in username@magnet.cl, without the @magnet.cl domain) to add as authorized key"
       private: no
   tasks:
     - name: get github username
