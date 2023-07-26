@@ -286,6 +286,7 @@ The following variables can be set as extra parameters when the playbook is
 played:
 
 * `hostname`: This variable is mandatory (example: "demo.do.magnet.cl").
+* `do_project_name`: This variable is mandatory (example: "MAGNET-DEVOPS").
 * `do_size`: Slug for the droplet size, the default value is `s-1vcpu-1gb`.
   The slugs can be listed with `doctl compute size list`.
 * `do_region`: Slug for the region, the default value is `nyc3`. The slugs can

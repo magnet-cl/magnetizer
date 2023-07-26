@@ -33,6 +33,7 @@
       digital_ocean_droplet:
         state: present
         name: "{{ hostname | mandatory }}"
+        project_name: "{{ do_project_name | mandatory }}"
         size: "{{ do_size | default('s-1vcpu-1gb') }}"
         region: "{{ do_region | default('nyc3') }}"
         image: "{{ do_image | default('ubuntu-22-04-x64') }}"
