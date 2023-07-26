@@ -35,7 +35,7 @@
         name: "{{ hostname | mandatory }}"
         size: "{{ do_size | default('s-1vcpu-1gb') }}"
         region: "{{ do_region | default('nyc3') }}"
-        image: "{{ do_image | default('ubuntu-20-04-x64') }}"
+        image: "{{ do_image | default('ubuntu-22-04-x64') }}"
         ssh_keys: "{{ ssh_keys_ids }}"
         monitoring: yes
         unique_name: yes
