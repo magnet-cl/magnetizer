@@ -82,6 +82,9 @@
     - role: ssh
       tags:
         - init
+      vars:
+        users:
+          - username: "{{ admin_user }}"
     - role: common
       tags:
         - init
