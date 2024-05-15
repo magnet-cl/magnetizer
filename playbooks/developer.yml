@@ -9,10 +9,6 @@
       tags:
         - utils
         - zsh
-    - role: node
-      tags:
-        - utils
-        - node
     - role: vim
       vars:
         users:

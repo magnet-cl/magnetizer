@@ -117,7 +117,6 @@ It includes the following roles considering localhost as target:
 
 * common/main
 * zsh
-* node
 * vim
 
 Since the target is localhost, the playbook can be run without specifying an
@@ -149,7 +148,6 @@ It includes the following tasks:
 * Setup NTP.
 * Set swap partition
 * Install zsh, oh-my-zsh and custom plugins.
-* Install node.js (LTS).
 * Install vim and [vim_config](https://github.com/magnet-cl/Vim_config).
 
 To run it against a server with passworded `sudo`, add `--ask-become-pass` (otherwise it fails with _Missing sudo password_).
