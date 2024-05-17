@@ -95,11 +95,6 @@
         - init
         - utils
         - zsh
-    - role: node
-      tags:
-        - init
-        - utils
-        - node
     - role: vim
       vars:
         users:
