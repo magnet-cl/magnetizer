@@ -24,7 +24,10 @@ esac
 
 if [ "$OS" == "Darwin" ] ; then
     print_green "Installing ansible"
-    pip3 install --user ansible ansible-lint paramiko
+    pip3 install --user ansible-core ansible-lint paramiko
+
+    print_green "Installing ansible-galaxy requirements"
+    ansible-galaxy install -r requirements.yml --force
 
     print_green "Remember to add the binary folder that contains ansible to PATH"
     ansible_path=$(pip3 show ansible | grep "Location.*lib" -o)
@@ -35,15 +38,23 @@ if [ "$OS" == "Darwin" ] ; then
     echo ""
 
 else
-    print_green "Installing pip3"
+    print_green "Installing pip and virtualenv"
     sudo apt update
-    sudo apt install --yes python3-pip git
+    sudo apt install --yes python3-pip virtualenv
+
+    print_green "Creating virtualenv"
+    virtualenv .env
+    source .env/bin/activate
 
     print_green "Installing ansible"
-    sudo -H pip3 install ansible ansible-lint paramiko jmespath
+    pip install ansible-core ansible-lint paramiko jmespath
+
+    print_green "Installing ansible-galaxy requirements"
+    ansible-galaxy install -r requirements.yml --force
 
     print_green "To create droplets install digital ocean cli with sudo snap install doctl"
-fi
 
-print_green "Installing ansible-galaxy requirements"
-ansible-galaxy install -r requirements.yml --force
+    print_green "To enable the created virtualenv run:"
+    print_green "source .env/bin/activate"
+
+fi
