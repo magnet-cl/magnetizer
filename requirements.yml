@@ -19,10 +19,6 @@ roles:
     src: https://github.com/geerlingguy/ansible-role-docker
     version: 67e50e9af050e89c7d2d323f02a02b2d6812c9c5 # 6.1.0
 
-  - name: geerlingguy.nodejs
-    src: https://github.com/geerlingguy/ansible-role-nodejs
-    version: f9f23697e4c47f170b3ddca6956e85984a4bc0b0 # 6.1.0
-
   - name: gantsign.oh-my-zsh
     src: https://github.com/gantsign/ansible-role-oh-my-zsh
     version: 3f63fc534779f5914f13bebb13c8a0dd23dbbc86 # 2.4.0
