@@ -12,11 +12,13 @@
       register: intranet_response
       vars:
         intranet_url: "https://intranet.magnet.cl/api/1.0/github-user/{{ magnet_username }}/"
+      delegate_to: localhost
 
     - name: fail if github username is not defined
       fail:
         msg: "The github username is not defined"
       when: "not intranet_response.json.github_username"
+      delegate_to: localhost
 
     - name: authorize ssh key
       authorized_key:
