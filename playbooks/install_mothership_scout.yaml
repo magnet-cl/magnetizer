@@ -1,0 +1,36 @@
+---
+- name: install Mothership's scout
+  hosts: all
+  roles:
+    - role: mothership_scout
+      server_payload:
+        name: '{{ server_name }}'
+        environment: '{{ server_environment }}'
+        project_code: '{{ project_code }}'
+        known_domain_names: ['{{ known_domain_name }}']
+        last_known_ip_address: '{{ ansible_facts["default_ipv4"]["address"] }}'
+
+  vars_prompt:
+    - name: server_name
+      prompt: Server name
+      private: false
+
+    - name: server_environment
+      prompt: |-
+        Server environment
+          - DEVELOPMENT
+          - QA
+          - PRODUCTION
+          - OTHER
+        choose from the list above
+
+      private: false
+      default: DEVELOPMENT
+
+    - name: project_code
+      prompt: Project code
+      private: false
+
+    - name: known_domain_name
+      prompt: Known domain name
+      private: false
