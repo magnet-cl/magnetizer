@@ -1,0 +1,13 @@
+---
+# TODO replace with production URL
+base_url: "https://mothership-dpt.do.magnet.cl"
+servers_endpoint: "/api/v1/servers/"
+server_environments:
+  - DEVELOPMENT
+  - QA
+  - PRODUCTION
+  - OTHER
+server_payload: {}
+scout_tar: "/static/scout-latest.tar.gz"
+scout_poetry_home: "/opt/poetry"
+poetry_version: "1.8.3"

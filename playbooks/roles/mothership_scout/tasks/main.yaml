@@ -1,0 +1,99 @@
+---
+- name: obtain token for Mothership from env var
+  set_fact:
+    bearer_token: '{{ lookup("env", "MOTHERSHIP_USER_KEY") }}'
+
+- name: fail if Mothership user key is unset
+  fail:
+    msg: 'MOTHERSHIP_USER_KEY env var is unset'
+  when: bearer_token == ''
+
+- name: fail if server name is empty
+  fail:
+    msg: 'Server name must be set'
+  when: server_name == ''
+
+- name: format server name
+  set_fact:
+    server_name: '{{ server_name | lower | replace("_", "-") | split() | join("-") }}'
+
+- name: validate server environment
+  fail:
+    msg: 'Invalid choice for server environment'
+  when: server_environment not in server_environments
+
+- name: make a request to Mothership to enroll the server
+  ansible.builtin.uri:
+    url: '{{ base_url }}{{ servers_endpoint }}'
+    method: POST
+    body_format: json
+    body: '{{ server_payload }}'
+    headers:
+      Authorization: 'Bearer {{ bearer_token }}'
+    force: true
+    return_content: true
+    status_code: 201
+  register: post_response
+  delegate_to: localhost
+
+- name: store Mothership's response
+  set_fact:
+    enroll_response: '{{ post_response.json }}'
+
+- name: install python3-virtualenv
+  apt:
+    name: python3-venv
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: create venv for poetry
+  ansible.builtin.command:
+    cmd: python3 -m venv '{{ scout_poetry_home }}'
+  become: true
+
+- name: install poetry
+  ansible.builtin.command:
+    cmd: '{{ scout_poetry_home }}/bin/pip install poetry=={{ poetry_version }}'
+  become: true
+
+- name: extract scout from Mothership on target server
+  ansible.builtin.unarchive:
+    src: '{{ base_url }}{{ scout_tar }}'
+    dest: ~/
+    remote_src: true
+    owner: root
+    group: root
+  become: true
+
+- name: install scout requirements with poetry
+  ansible.builtin.command:
+    cmd: '{{ scout_poetry_home }}/bin/poetry install'
+    chdir: ~/scout
+  become: true
+
+- name: init scout config file
+  ansible.builtin.copy:
+    src: ~/scout/config.ini.example
+    dest: ~/scout/config.ini
+    remote_src: true
+  become: true
+
+- name: set base url on config file
+  ansible.builtin.replace:
+    path: ~/scout/config.ini
+    regexp: BASE_URL
+    replace: '{{ base_url }}'
+  become: true
+
+- name: set scout key on config file
+  ansible.builtin.replace:
+    path: ~/scout/config.ini
+    regexp: SCOUT_KEY
+    replace: '{{ enroll_response.scout_key }}'
+  become: true
+
+- name: cleanup config file example
+  ansible.builtin.file:
+    path: ~/scout/config.ini.example
+    state: absent
+  become: true
