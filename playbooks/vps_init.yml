@@ -12,12 +12,31 @@
     - name: admin_user
       prompt: "Enter user name to create an admin with sudo"
       default: magnet
-      private: no
+      private: false
     - name: admin_user_password
       prompt: "Enter user password"
-      private: yes
+      private: true
       encrypt: "sha512_crypt"
-      confirm: yes
+      confirm: true
+    - name: server_name
+      prompt: Server name
+      private: false
+    - name: server_environment
+      prompt: |-
+        Server environment
+          - DEVELOPMENT
+          - QA
+          - PRODUCTION
+          - OTHER
+        choose from the list above
+      private: false
+      default: DEVELOPMENT
+    - name: project_code
+      prompt: Project code
+      private: false
+    - name: known_domain_name
+      prompt: Known domain name
+      private: false
 
   pre_tasks:
     - name: check that ansible_limit is defined
@@ -118,3 +137,13 @@
         upgrade: safe
       become: yes
       when: ansible_distribution == "Ubuntu"
+    - name: install Mothership's scout
+      include_role:
+        name: mothership_scout
+      vars:
+        server_payload:
+          name: '{{ server_name }}'
+          environment: '{{ server_environment }}'
+          project_code: '{{ project_code }}'
+          known_domain_names: ['{{ known_domain_name }}']
+          last_known_ip_address: '{{ ansible_facts["default_ipv4"]["address"] }}'
