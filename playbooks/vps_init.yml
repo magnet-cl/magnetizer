@@ -128,6 +128,9 @@
       include_role:
         name: common
         tasks_from: set_ntp_pool
+      when:
+        - ansible_distribution == "Ubuntu"
+        - ansible_distribution_version is version("24.04", "<")
     - name: set swap partition
       include_role:
         name: common
