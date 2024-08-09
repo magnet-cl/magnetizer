@@ -97,3 +97,15 @@
     path: ~/scout/config.ini.example
     state: absent
   become: true
+
+- name: register scout on cron
+  ansible.builtin.cron:
+    name: mothership scout
+    job: >
+      cd ~/scout &&
+      {{ scout_poetry_home }}/bin/poetry run python scout.py
+      2>&1 | logger -t scout
+    minute: '*'
+    hour: '*'
+    state: present
+  become: true
