@@ -9,5 +9,7 @@ server_environments:
   - OTHER
 server_payload: {}
 scout_tar: "/static/scout-latest.tar.gz"
-scout_poetry_home: "/opt/poetry"
+scout_poetry_dir: "/opt/poetry"
+scout_installation_base_dir: "/opt/magnet"
+scout_installation_dir: "/opt/magnet/scout"
 poetry_version: "1.8.3"
