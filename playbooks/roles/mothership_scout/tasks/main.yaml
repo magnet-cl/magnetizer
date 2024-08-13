@@ -1,0 +1,124 @@
+---
+- name: obtain token for Mothership from env var
+  set_fact:
+    bearer_token: '{{ lookup("env", "MOTHERSHIP_USER_KEY") }}'
+
+- name: fail if Mothership user key is unset
+  fail:
+    msg: 'MOTHERSHIP_USER_KEY env var is unset'
+  when: bearer_token == ''
+
+- name: fail if server name is empty
+  fail:
+    msg: 'Server name must be set'
+  when: server_name == ''
+
+- name: format server name
+  set_fact:
+    server_name: '{{ server_name | lower | replace("_", "-") | split() | join("-") }}'
+
+- name: validate server environment
+  fail:
+    msg: 'Invalid choice for server environment'
+  when: server_environment not in server_environments
+
+- name: make a request to Mothership to enroll the server
+  ansible.builtin.uri:
+    url: '{{ base_url }}{{ servers_endpoint }}'
+    method: POST
+    body_format: json
+    body: '{{ server_payload }}'
+    headers:
+      Authorization: 'Bearer {{ bearer_token }}'
+    force: true
+    return_content: true
+    status_code: 201
+  register: post_response
+  delegate_to: localhost
+  when: server_scout_key == ''
+
+- name: store Mothership's response
+  set_fact:
+    enroll_response: '{{ post_response.json }}'
+  when: server_scout_key == ''
+
+- name: store scout key
+  set_fact:
+    scout_key: '{{ server_scout_key or enroll_response.scout_key }}'
+
+- name: install python3-virtualenv
+  apt:
+    name: python3-venv
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: create venv for poetry
+  ansible.builtin.command:
+    cmd: python3 -m venv '{{ scout_poetry_dir }}'
+  become: true
+
+- name: install poetry
+  ansible.builtin.command:
+    cmd: '{{ scout_poetry_dir }}/bin/pip install poetry=={{ poetry_version }}'
+  become: true
+
+- name: ensure parent's scout directory exists
+  ansible.builtin.file:
+    path: '{{ scout_installation_base_dir }}'
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: extract scout from Mothership on target server
+  ansible.builtin.unarchive:
+    src: '{{ base_url }}{{ scout_tar }}'
+    dest: '{{ scout_installation_base_dir }}'
+    remote_src: true
+    owner: root
+    group: root
+  become: true
+
+- name: install scout requirements with poetry
+  ansible.builtin.command:
+    cmd: '{{ scout_poetry_dir }}/bin/poetry install'
+    chdir: '{{ scout_installation_dir }}'
+  become: true
+
+- name: init scout config file
+  ansible.builtin.copy:
+    src: '{{ scout_installation_dir }}/config.ini.example'
+    dest: '{{ scout_installation_dir }}/config.ini'
+    remote_src: true
+  become: true
+
+- name: set base url on config file
+  ansible.builtin.replace:
+    path: '{{ scout_installation_dir }}/config.ini'
+    regexp: BASE_URL
+    replace: '{{ base_url }}'
+  become: true
+
+- name: set scout key on config file
+  ansible.builtin.replace:
+    path: '{{ scout_installation_dir }}/config.ini'
+    regexp: SCOUT_KEY
+    replace: '{{ scout_key }}'
+  become: true
+
+- name: cleanup config file example
+  ansible.builtin.file:
+    path: '{{ scout_installation_dir }}/config.ini.example'
+    state: absent
+  become: true
+
+- name: register scout on cron
+  ansible.builtin.cron:
+    name: mothership scout
+    job: >
+      cd {{ scout_installation_dir }} &&
+      {{ scout_poetry_dir }}/bin/poetry run python scout.py
+      2>&1 | logger -t scout
+    minute: '*'
+    hour: '*'
+    state: present
+  become: true

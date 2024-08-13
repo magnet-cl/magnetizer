@@ -2,7 +2,7 @@
 - name: update repositories index
   apt:
     update_cache: true
-  become: yes
+  become: true
   when: ansible_distribution == "Ubuntu"
   tags:
     - update_apt_index
@@ -11,9 +11,11 @@
   apt:
     name: "{{ recommended_ubuntu_packages }}"
     state: present
-  become: yes
+  become: true
   when: ansible_distribution == "Ubuntu"
 
 - name: setup NTP
   import_tasks: ntp.yml
-  when: ansible_distribution == "Ubuntu"
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_version is version("24.04", "<")
