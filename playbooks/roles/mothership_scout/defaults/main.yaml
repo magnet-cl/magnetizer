@@ -8,6 +8,7 @@ server_environments:
   - PRODUCTION
   - OTHER
 server_payload: {}
+server_scout_key: ""
 scout_tar: "/static/scout-latest.tar.gz"
 scout_poetry_dir: "/opt/poetry"
 scout_installation_base_dir: "/opt/magnet"
