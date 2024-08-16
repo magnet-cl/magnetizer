@@ -37,28 +37,30 @@
     - ansible_user_id != "root"
     - ansible_distribution == "Ubuntu"
 
-- name: add github to known hosts
+- name: add github keys to known hosts
   known_hosts:
-    path: "~{{ item.username }}/.ssh/known_hosts"
+    path: "~{{ item.0.username }}/.ssh/known_hosts"
     name: github.com
-    key: "{{ github_host_key }}"
+    key: "{{ item.1 }}"
     state: present
-  with_items:
+  with_nested:
     - "{{ users }}"
+    - "{{ github_host_keys }}"
   become: yes
-  become_user: "{{ item.username }}"
+  become_user: "{{ item.0.username }}"
   tags:
     - init
 
-- name: add bitbucket to known hosts
+- name: add bitbucket keys to known hosts
   known_hosts:
-    path: "~{{ item.username }}/.ssh/known_hosts"
+    path: "~{{ item.0.username }}/.ssh/known_hosts"
     name: bitbucket.org
-    key: "{{ bitbucket_host_key }}"
+    key: "{{ item.1 }}"
     state: present
-  with_items:
+  with_nested:
     - "{{ users }}"
+    - "{{ bitbucket_host_keys }}"
   become: yes
-  become_user: "{{ item.username }}"
+  become_user: "{{ item.0.username }}"
   tags:
     - init
