@@ -1,6 +1,5 @@
 ---
-# TODO replace with production URL
-base_url: "https://mothership-dpt.do.magnet.cl"
+base_url: "https://mothership.magnet.cl"
 servers_endpoint: "/api/v1/servers/"
 server_environments:
   - DEVELOPMENT

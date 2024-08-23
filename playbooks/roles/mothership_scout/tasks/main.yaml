@@ -111,6 +111,20 @@
     state: absent
   become: true
 
+- name: enable high precision timestamps on syslog
+  ansible.builtin.lineinfile:
+    path: /etc/rsyslog.conf
+    regexp: '^\$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
+    line: '# $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
+    state: absent
+  become: true
+
+- name: restart syslog service
+  ansible.builtin.systemd_service:
+    name: syslog.socket
+    state: restarted
+  become: true
+
 - name: register scout on cron
   ansible.builtin.cron:
     name: mothership scout
