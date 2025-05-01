@@ -23,38 +23,37 @@ case "$(uname -s)" in
 esac
 
 if [ "$OS" == "Darwin" ] ; then
-    print_green "Installing ansible"
-    pip3 install --user ansible-core ansible-lint paramiko
+    print_green "Installing virtualenv"
+    pip3 install virtualenv
 
-    print_green "Installing ansible-galaxy requirements"
-    ansible-galaxy install -r requirements.yml --force
+    PYTHON_VERSION=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+    PYTHON_PATH="$HOME/Library/Python/$PYTHON_VERSION/bin"
+    ZSHRC="$HOME/.zshrc"
 
-    print_green "Remember to add the binary folder that contains ansible to PATH"
-    ansible_path=$(pip3 show ansible | grep "Location.*lib" -o)
-    location=${ansible_path//\/lib/\/bin}
-    location=${location//Location: /}
-    print_green "Include the following line in your shell dotfile (may be ~/.zshrc or ~/.bash_profile):"
-    print_green "export PATH=\$PATH:$location"
-    echo ""
-
+    # Check if path is already in .zshrc
+    if ! grep -qs "$PYTHON_PATH" "$ZSHRC"; then
+      echo "Adding Python user path to .zshrc..."
+      echo "export PATH=\"$PYTHON_PATH:\$PATH\"" >> "$ZSHRC"
+      echo "Added: export PATH=\"$PYTHON_PATH:\$PATH\""
+      source "$ZSHRC"
+    fi
 else
     print_green "Installing pip and virtualenv"
     sudo apt update
     sudo apt install --yes python3-pip virtualenv
-
-    print_green "Creating virtualenv"
-    virtualenv .env
-    source .env/bin/activate
-
-    print_green "Installing ansible"
-    pip install ansible-core ansible-lint paramiko jmespath
-
-    print_green "Installing ansible-galaxy requirements"
-    ansible-galaxy install -r requirements.yml --force
-
-    print_green "To create droplets install digital ocean cli with sudo snap install doctl"
-
-    print_green "To enable the created virtualenv run:"
-    print_green "source .env/bin/activate"
-
 fi
+
+print_green "Creating virtualenv"
+virtualenv .env
+source .env/bin/activate
+
+print_green "Installing ansible"
+pip install ansible-core ansible-lint paramiko jmespath
+
+print_green "Installing ansible-galaxy requirements"
+ansible-galaxy install -r requirements.yml --force
+
+
+print_green "To create droplets install digital ocean cli with sudo snap install doctl"
+print_green "To enable the created virtualenv run:"
+print_green "source .env/bin/activate"
