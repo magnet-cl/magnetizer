@@ -18,8 +18,10 @@ function grepr(){
                 params+="--exclude-dir=bower_components"
                 params+="--exclude-dir=fixtures"
                 params+="--exclude-dir=CACHE"
+                params+="--exclude-dir=test-results"
                 params+="--exclude=*.sql"
                 params+="--exclude=*.log"
+                params+="--exclude=poetry.lock"
                 ;;
             --em)
                 params+="--exclude-dir=migrations"
