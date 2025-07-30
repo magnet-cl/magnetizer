@@ -4,7 +4,6 @@
   vars:
     github_users_as_initial_admins:  # TODO get list dinamically
       - imunizaga
-      - wooo-
       - nstuardod
 
   vars_prompt:
