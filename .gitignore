@@ -1,1 +1,10 @@
 .tags
+
+# IDEs
+.idea
+.vscode
+
+# Local inventories
+inventory.yaml
+inventory*.yaml
+
