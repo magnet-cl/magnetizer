@@ -8,15 +8,26 @@
       - nstuardod
 
   vars_prompt:
-    - name: admin_user
-      prompt: "Enter user name to create an admin with sudo"
+    - name: std_user
+      prompt: "Enter user name to create a standard user without sudo"
       default: magnet
       private: false
-    - name: admin_user_password
+    - name: std_user_password
       prompt: "Enter user password"
       private: true
       encrypt: "sha512_crypt"
       confirm: true
+
+    - name: admin_user
+      prompt: "Enter user name to create an administrator with sudo"
+      default: magnet-admin
+      private: false
+    - name: admin_user_password
+      prompt: "Enter administrator password"
+      private: true
+      encrypt: "sha512_crypt"
+      confirm: true
+
     - name: server_name
       prompt: Server name
       private: false
@@ -38,53 +49,15 @@
       private: false
 
   pre_tasks:
+    - name: obtain token for Mothership from env var
+      set_fact:
+        has_mothership_token: '{{ lookup("env", "MOTHERSHIP_USER_KEY") != "" }}'
+
     - name: check that ansible_limit is defined
       assert:
         that: ansible_limit is defined
         fail_msg: Please explicitly limit the hosts you want to target with --limit or -l
         quiet: yes
-
-    - name: add group for admin user
-      group:
-        name: "{{ admin_user }}"
-        state: present
-      become: yes
-      tags:
-        - init
-
-    - name: add admin user with sudo as additional group
-      user:
-        name: "{{ admin_user }}"
-        group: "{{ admin_user }}"   # Without this, gid=100(users)
-        groups:
-          - "{{ admin_user }}"
-          - sudo
-          - adm   # allows reading /var/log/nginx/* without sudo
-        append: yes
-        password: "{{ admin_user_password }}"
-        update_password: on_create
-      become: yes
-      tags:
-        - init
-
-    - name: add ssh keys of initial admins
-      authorized_key:
-        user: "{{ admin_user }}"
-        state: present
-        key: "https://github.com/{{ item }}.keys"
-      loop: "{{ github_users_as_initial_admins }}"
-      become: yes
-      tags:
-        - init
-
-    - name: add admin user to sudoers
-      template:
-        src: templates/admin_user_sudoers.j2
-        dest: "/etc/sudoers.d/{{ admin_user }}"
-        mode: 0440
-      become: yes
-      tags:
-        - init
 
     - name: set default locale
       lineinfile:
@@ -96,11 +69,21 @@
         - init
 
   roles:
+    - role: users
+      tags:
+        - init
+      vars:
+        std_user: "{{ std_user }}"
+        std_user_password: "{{ std_user_password }}"
+        admin_user: "{{ admin_user }}"
+        admin_user_password: "{{ admin_user_password }}"
+        github_users_as_initial_admins: "{{ github_users_as_initial_admins }}"
     - role: ssh
       tags:
         - init
       vars:
         users:
+          - username: "{{ std_user }}"
           - username: "{{ admin_user }}"
     - role: common
       tags:
@@ -108,6 +91,7 @@
     - role: zsh
       vars:
         users:
+          - username: "{{ std_user }}"
           - username: "{{ admin_user }}"
       tags:
         - init
@@ -116,6 +100,7 @@
     - role: vim
       vars:
         users:
+          - username: "{{ std_user }}"
           - username: "{{ admin_user }}"
       tags:
         - init
@@ -152,3 +137,4 @@
       tags:
         - init
         - mothership
+      when: has_mothership_token
