@@ -1,6 +1,7 @@
 ---
 - name: vps init
   hosts: all
+  gather_facts: true
   vars:
     github_users_as_initial_admins:  # TODO get list dinamically
       - imunizaga
