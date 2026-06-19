@@ -5,14 +5,14 @@
     - role: zsh
       vars:
         users:
-          - username: "{{ ansible_user_id }}"
+          - username: "{{ ansible_facts.user_id }}"
       tags:
         - utils
         - zsh
     - role: vim
       vars:
         users:
-          - username: "{{ ansible_user_id }}"
+          - username: "{{ ansible_facts.user_id }}"
       tags:
         - utils
         - vim

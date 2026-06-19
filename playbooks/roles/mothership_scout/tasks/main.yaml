@@ -50,7 +50,7 @@
   apt:
     name: python3-venv
   become: true
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: ansible_facts.distribution in ['Debian', 'Ubuntu']
 
 - name: create venv for poetry
   ansible.builtin.command:

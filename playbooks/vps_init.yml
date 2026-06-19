@@ -113,8 +113,8 @@
         name: common
         tasks_from: set_ntp_pool
       when:
-        - ansible_distribution == "Ubuntu"
-        - ansible_distribution_version is version("24.04", "<")
+        - ansible_facts.distribution == "Ubuntu"
+        - ansible_facts.distribution_version is version("24.04", "<")
     - name: set swap partition
       include_role:
         name: common
@@ -123,7 +123,7 @@
       apt:
         upgrade: safe
       become: yes
-      when: ansible_distribution == "Ubuntu"
+      when: ansible_facts.distribution == "Ubuntu"
     - name: install Mothership's scout
       include_role:
         name: mothership_scout
@@ -133,7 +133,7 @@
           environment: '{{ server_environment }}'
           project_code: '{{ project_code }}'
           known_domain_names: ['{{ known_domain_name }}']
-          last_known_ip_address: '{{ ansible_facts["default_ipv4"]["address"] }}'
+          last_known_ip_address: '{{ ansible_facts.default_ipv4.address }}'
       tags:
         - init
         - mothership

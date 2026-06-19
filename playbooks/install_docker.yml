@@ -12,7 +12,7 @@
         docker_install_compose: false         # Don't install standalone binary, which is now not recommended
         docker_install_compose_plugin: true   # Use the plugin instead
         # Do not fail if some of these users do not exist, as they may be created later by other roles.
-        docker_users: "{{ [ansible_user_id, 'magnet', 'magnet-admin'] | select('in', (ansible_facts.getent_passwd | default({})).keys() | list) | unique }}"
+        docker_users: "{{ [ansible_facts.user_id, 'magnet', 'magnet-admin'] | select('in', (ansible_facts.getent_passwd | default({})).keys() | list) | unique }}"
 
   tasks:
     - name: show hint

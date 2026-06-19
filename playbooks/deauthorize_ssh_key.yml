@@ -22,7 +22,7 @@
 
     - name: deauthorize ssh key
       authorized_key:
-        user: "{{ ansible_user_id }}"
+        user: "{{ ansible_facts.user_id }}"
         state: absent
         key: "https://github.com/{{ github_username }}.keys"
       vars:

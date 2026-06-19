@@ -4,7 +4,7 @@
     name: python3-apt
     state: present
   become: yes
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
   tags:
     - certbot
 
@@ -20,7 +20,7 @@
   become: yes
   when:
     - "'nginx' in ansible_facts.packages"
-    -  ansible_distribution == "Ubuntu"
+    -  ansible_facts.distribution == "Ubuntu"
   tags:
     - certbot
 
@@ -71,7 +71,7 @@
       }
   loop: "{{ enabled_sites.files }}"
   become: yes
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
 
 - name: secure nginx
   include_tasks: security.yml

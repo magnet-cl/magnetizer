@@ -1,10 +1,17 @@
 ---
+- name: debug ansible facts
+  debug:
+    var: ansible_facts
+  tags:
+    - init
+    - vim
+
 - name: install vim
   apt:
     name: vim
     state: present
   become: yes
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
   tags:
     - init
     - vim
@@ -17,7 +24,7 @@
   become: yes
   become_user: "{{ item.username }}"
   with_items:
-    - "{{ users | default({'username': ansible_user_id}) }}"
+    - "{{ users | default([{'username': ansible_facts.user_id}]) }}"
   tags:
     - vim
 
@@ -26,7 +33,7 @@
     name: "{{ vim_config_deb_packages }}"
     state: present
   become: yes
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts.distribution == "Ubuntu"
   tags:
     - vim
 
@@ -34,7 +41,7 @@
   homebrew:
     name: "{{ vim_config_brew_packages }}"
     state: present
-  when: ansible_distribution == 'MacOSX'
+  when: ansible_facts.distribution == 'MacOSX'
   tags:
     - vim
 
@@ -46,6 +53,6 @@
   become: yes
   become_user: "{{ item.username }}"
   with_items:
-    - "{{ users | default({'username': ansible_user_id}) }}"
+    - "{{ users | default([{'username': ansible_facts.user_id}]) }}"
   tags:
     - vim
