@@ -46,11 +46,13 @@
   set_fact:
     scout_key: '{{ server_scout_key or enroll_response.scout_key }}'
 
-- name: install python3-virtualenv
+- name: install requisites
   apt:
-    name: python3-venv
+    name: '{{ item }}'
   become: true
-  when: ansible_facts.distribution in ['Debian', 'Ubuntu']
+  loop:
+    - python3-venv
+    - python3-dev
 
 - name: create venv for poetry
   ansible.builtin.command:
