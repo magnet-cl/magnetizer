@@ -4,7 +4,7 @@
     name: vim
     state: present
   become: yes
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts["distribution"] == "Ubuntu"
   tags:
     - init
     - vim
@@ -26,7 +26,7 @@
     name: "{{ vim_config_deb_packages }}"
     state: present
   become: yes
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts["distribution"] == "Ubuntu"
   tags:
     - vim
 
@@ -34,7 +34,7 @@
   homebrew:
     name: "{{ vim_config_brew_packages }}"
     state: present
-  when: ansible_distribution == 'MacOSX'
+  when: ansible_facts["distribution"] == 'MacOSX'
   tags:
     - vim
 
