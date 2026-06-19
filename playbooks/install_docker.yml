@@ -1,14 +1,19 @@
 ---
 - name: use geerlingguy role to install docker
   hosts: all
+  pre_tasks:
+    - name: gather passwd entries
+      ansible.builtin.getent:
+        database: passwd
   roles:
     - role: geerlingguy.docker
       become: yes
       vars:
         docker_install_compose: false         # Don't install standalone binary, which is now not recommended
         docker_install_compose_plugin: true   # Use the plugin instead
-        docker_users:
-          - "{{ ansible_user_id }}"
+        # Do not fail if some of these users do not exist, as they may be created later by other roles.
+        docker_users: "{{ [ansible_user_id, 'magnet', 'magnet-admin'] | select('in', (ansible_facts.getent_passwd | default({})).keys() | list) | unique }}"
+
   tasks:
     - name: show hint
       debug:
