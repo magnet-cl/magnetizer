@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  gather_facts: true
   vars_prompt:
     - name: magnet_username
       prompt: "Enter your Magnet username (as in username@magnet.cl, without the @magnet.cl domain) to add as authorized key"

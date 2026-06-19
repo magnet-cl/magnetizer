@@ -1,6 +1,7 @@
 ---
 - name: use geerlingguy role to install docker
   hosts: all
+  gather_facts: true
   pre_tasks:
     - name: gather passwd entries
       ansible.builtin.getent:

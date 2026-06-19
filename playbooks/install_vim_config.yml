@@ -1,5 +1,6 @@
 ---
 - name: install vim and vim_config
+  gather_facts: true
   hosts: all
   roles:
     - role: vim

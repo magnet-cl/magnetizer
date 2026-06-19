@@ -1,5 +1,6 @@
 ---
 - name: install zsh, oh-my-zsh with custom plugins
+  gather_facts: true
   hosts: all
   roles:
     - role: zsh

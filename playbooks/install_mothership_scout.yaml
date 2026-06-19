@@ -1,5 +1,6 @@
 ---
 - name: install Mothership's scout
+  gather_facts: true
   hosts: all
   roles:
     - role: mothership_scout
