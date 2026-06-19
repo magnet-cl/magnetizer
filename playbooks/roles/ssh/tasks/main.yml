@@ -22,6 +22,7 @@
   openssh_keypair:
     path: "~{{ item.username }}/.ssh/id_rsa"
     owner: "{{ item.username }}"
+    group: "{{ item.username }}"
   with_items:
     - "{{ users }}"
   become: yes

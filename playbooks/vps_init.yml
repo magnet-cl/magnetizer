@@ -73,11 +73,11 @@
       tags:
         - init
       vars:
-        std_user: "{{ std_user }}"
-        std_user_password: "{{ std_user_password }}"
-        admin_user: "{{ admin_user }}"
-        admin_user_password: "{{ admin_user_password }}"
-        github_users_as_initial_admins: "{{ github_users_as_initial_admins }}"
+        std_username: "{{ std_user }}"
+        std_password: "{{ std_user_password }}"
+        admin_username: "{{ admin_user }}"
+        admin_password: "{{ admin_user_password }}"
+        initial_admin_gh_names: "{{ github_users_as_initial_admins }}"
     - role: ssh
       tags:
         - init
