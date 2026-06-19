@@ -5,6 +5,14 @@
     - init
     - security
 
+- name: install acl package to allow ownership change
+  apt:
+    name: acl
+    state: present
+  become: yes
+  when:
+    - ansible_distribution in ["Ubuntu", "Debian"]
+
 - name: create ssh directory
   file:
     path: "~{{ item.username }}/.ssh"
@@ -28,15 +36,6 @@
   become: yes
   tags:
     - init
-
-- name: install acl package to allow ownership change
-  apt:
-    name: acl
-    state: present
-  become: yes
-  when:
-    - ansible_user_id != "root"
-    - ansible_distribution == "Ubuntu"
 
 - name: add github keys to known hosts
   known_hosts:
