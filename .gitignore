@@ -1,3 +1,4 @@
+# Vim
 .tags
 
 # IDEs
@@ -7,4 +8,3 @@
 # Local inventories
 inventory.yaml
 inventory*.yaml
-
