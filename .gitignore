@@ -8,3 +8,9 @@
 inventory.yaml
 inventory*.yaml
 
+# Environment
+.env
+.env.*
+
+# macOS metadata
+.DS_Store
