@@ -1,7 +1,7 @@
 ---
 - name: obtain token for Mothership from env var
   set_fact:
-    bearer_token: '{{ lookup("env", "MOTHERSHIP_USER_KEY") }}'
+    bearer_token: '{{ MOTHERSHIP_USER_KEY | default(lookup("env", "MOTHERSHIP_USER_KEY")) }}'
 
 - name: fail if Mothership user key is unset
   fail:
