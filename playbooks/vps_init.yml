@@ -2,9 +2,10 @@
 - name: vps init
   hosts: all
   vars:
-    github_users_as_initial_admins:  # TODO get list dinamically
+    github_users_as_initial_admins:  # TODO: get list dynamically
       - imunizaga
       - nstuardod
+      - AlfredoMagnet
 
   vars_prompt:
     - name: admin_user
