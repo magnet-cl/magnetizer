@@ -136,3 +136,63 @@
     hour: '*'
     state: present
   become: true
+
+- name: create helper user for AuthorizedKeysCommand
+  ansible.builtin.user:
+    name: magnet-sshkey-helper
+    system: true
+    shell: /usr/sbin/nologin
+    home: /nonexistent
+    create_home: false
+    password_lock: true
+    comment: Helper user for AuthorizedKeysCommand
+    state: present
+  become: true
+  when: install_authorizedkeyscommand
+
+- name: install AuthorizedKeysCommand shim
+  ansible.builtin.copy:
+    dest: '{{ scout_installation_dir }}/mothership_authorized_keys.sh'
+    content: |
+      #!/bin/sh
+      cd '{{ scout_installation_dir }}' || exit
+      exec '{{ scout_poetry_dir }}/bin/poetry' run ./mothership_authorized_keys.py "$@"
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+  when: install_authorizedkeyscommand
+
+- name: override sshd systemd unit for AuthorizedKeysCommand
+  ansible.builtin.file:
+    path: /etc/systemd/system/ssh.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+  when: install_authorizedkeyscommand
+
+- name: configure AuthorizedKeysCommand in sshd unit
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/ssh.service.d/override.conf
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=/usr/sbin/sshd -D -o "AuthorizedKeysCommand {{ scout_installation_dir }}/mothership_authorized_keys.sh %%u" -o "AuthorizedKeysCommandUser magnet-sshkey-helper" $SSHD_OPTS
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  register: sshd_unit_override
+  when: install_authorizedkeyscommand
+
+- name: reload systemd and restart sshd
+  ansible.builtin.systemd_service:
+    name: ssh
+    daemon_reload: true
+    state: restarted
+  become: true
+  when:
+    - install_authorizedkeyscommand
+    - sshd_unit_override.changed
