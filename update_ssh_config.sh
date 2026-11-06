@@ -6,7 +6,7 @@ function print_green() {
 	echo -e "\033[32m$1\033[39m"
 }
 
-REPO='git@bitbucket.org/magnet-cl/keygen.git'
+REPO='git@ssh.bitbucket.org/magnet-cl/keygen.git'
 SSH_CONFIG_FILE='ssh_config'
 IDENTITY_FILE_PATH=''
 
