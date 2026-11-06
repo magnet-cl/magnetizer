@@ -1,0 +1,75 @@
+---
+- name: add group for standard users
+  group:
+    name: "{{ std_username }}"
+    state: present
+  become: true
+  tags:
+    - init
+
+- name: add group for admin user
+  group:
+    name: "{{ admin_username }}"
+    state: present
+  become: true
+  tags:
+    - init
+
+- name: add standard user
+  user:
+    name: "{{ std_username }}"
+    group: "{{ std_username }}"   # Without this, gid=100(users)
+    groups:
+      - "{{ std_username }}"
+    append: true
+    password: "{{ std_password }}"
+    update_password: on_create
+  become: true
+  tags:
+    - init
+
+- name: add administrator user
+  user:
+    name: "{{ admin_username }}"
+    group: "{{ admin_username }}"   # Without this, gid=100(users)
+    # add admin user to the same group as standard user, so that it can read files owned by the standard user
+    groups:
+      - "{{ admin_username }}"
+      - "{{ std_username }}"
+      - sudo
+      - adm   # allows reading /var/log/nginx/* without sudo
+    append: true
+    password: "{{ admin_password }}"
+    update_password: on_create
+  become: true
+  tags:
+    - init
+
+- name: add ssh keys of initial admins
+  authorized_key:
+    user: "{{ admin_username }}"
+    state: present
+    key: "https://github.com/{{ item }}.keys"
+  loop: "{{ initial_admin_gh_names }}"
+  become: true
+  tags:
+    - init
+
+- name: add ssh keys of initial admins for standard user
+  authorized_key:
+    user: "{{ std_username }}"
+    state: present
+    key: "https://github.com/{{ item }}.keys"
+  loop: "{{ initial_admin_gh_names }}"
+  become: true
+  tags:
+    - init
+
+- name: add admin user to sudoers
+  template:
+    src: templates/admin_user_sudoers.j2
+    dest: "/etc/sudoers.d/{{ admin_username }}"
+    mode: 0440
+  become: true
+  tags:
+    - init
