@@ -6,8 +6,8 @@
   tasks:
     - name: Add new ssh key
       ansible.builtin.known_hosts:
-        name: bitbucket.org
-        key: bitbucket.org {{ new_key }}
+        name: ssh.bitbucket.org
+        key: ssh.bitbucket.org {{ new_key }}
         state: present
         hash_host: false
 

@@ -54,7 +54,7 @@
 - name: add bitbucket keys to known hosts
   known_hosts:
     path: "~{{ item.0.username }}/.ssh/known_hosts"
-    name: bitbucket.org
+    name: ssh.bitbucket.org
     key: "{{ item.1 }}"
     state: present
   with_nested:

@@ -40,7 +40,7 @@ function mclone(){
         eval $command
     else
         echo "Cloning from bitbucket"
-        command="git clone git@bitbucket.org:magnet-cl/$REPOSITORY.git $DIRECTORY"
+        command="git clone git@ssh.bitbucket.org:magnet-cl/$REPOSITORY.git $DIRECTORY"
         echo $command
         eval $command
     fi
